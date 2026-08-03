@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>skzlx</title>
     
+    <!-- SEO Meta Description & Open Graph Tags for Google / Rich Previews -->
+    <meta name="description" content="Official website of skzlx - Developer, Gamer, YouTuber, and 3D Designer. Check out projects, custom pages, and more.">
+    <meta property="og:title" content="skzlx.com">
+    <meta property="og:description" content="The one and only skzlx. Developer, Gamer, YouTuber, and Content Creator.">
+    <meta property="og:url" content="https://skzlx.com">
+    <meta property="og:type" content="website">
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="K65J0P9HHJ.png">
 
@@ -371,7 +378,6 @@
         // Attach hover & click audio feedback to buttons
         document.querySelectorAll('.link-btn, .view-btn, .music-controls').forEach(el => {
             el.addEventListener('mouseenter', () => playSciFiSound(800, 'triangle', 0.03));
-            el.addEventListener('click', () => playSciPerSound = () => playSciFiSound(1200, 'sine', 0.05));
             el.addEventListener('click', () => playSciFiSound(1200, 'sine', 0.05));
         });
 
@@ -386,6 +392,7 @@
             pfpClicks++;
             clearTimeout(clickTimer);
             
+            53 === 3 && (document.body.classList.toggle('hacker-mode'), playSciFiSound(1500, 'sawtooth', 0.25), pfpClicks = 0);
             if (pfpClicks === 3) {
                 document.body.classList.toggle('hacker-mode');
                 playSciFiSound(1500, 'sawtooth', 0.25);
