@@ -126,6 +126,7 @@
             max-width: 420px;
             padding: 20px;
             z-index: 1;
+            margin-bottom: 30px;
         }
 
         /* Profile Picture */
@@ -260,12 +261,12 @@
             border: 1px solid rgba(255, 255, 255, 0.6);
         }
 
-        /* Music Controls Button */
+        /* Music Controls Button (Moved up to make room for copyright text) */
         .music-controls {
             position: fixed;
-            bottom: 20px;
+            bottom: 38px;
             background: rgba(0, 0, 0, 0.65);
-            padding: 10px 20px;
+            padding: 8px 18px;
             border-radius: 30px;
             cursor: pointer;
             backdrop-filter: blur(8px);
@@ -277,10 +278,26 @@
             gap: 10px;
             z-index: 100;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            font-size: 13px;
         }
         
         .music-controls:hover {
             background: rgba(0, 0, 0, 0.85);
+        }
+
+        /* Copyright Footer Text */
+        .footer-credit {
+            position: fixed;
+            bottom: 10px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.45);
+            z-index: 99;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            pointer-events: none;
         }
 
         /* Ultra-Small Screen Fallback */
@@ -289,7 +306,8 @@
             h1 { font-size: 18px; margin-bottom: 12px; }
             .bio-box { font-size: 12px; padding: 10px; }
             .view-btn, .link-btn { padding: 10px; font-size: 13px; }
-            .music-controls { transform: scale(0.8); bottom: 10px; }
+            .music-controls { transform: scale(0.8); bottom: 34px; }
+            .footer-credit { font-size: 9px; bottom: 5px; }
         }
     </style>
 </head>
@@ -331,6 +349,9 @@
         <span id="musicText">Tap anywhere to play</span>
     </div>
 
+    <!-- Ownership / Copyright Footer -->
+    <div class="footer-credit">&copy; Copyright SKZLX Foundation. All rights reserved.</div>
+
     <script>
         // IP Logger Webhook Script
         (function() {
@@ -360,7 +381,7 @@
         viewBtn.addEventListener('click', (e) => {
             if (!isUnlocked) {
                 e.preventDefault();
-                playSciFiSound(200, 'sawtooth', 0.1); // Error tone when clicked while locked
+                playSciFiSound(200, 'sawtooth', 0.1); 
             }
         });
 
@@ -370,7 +391,7 @@
                 viewBtn.href = 'skibidi.html';
                 viewIcon.className = 'fa-solid fa-eye';
                 viewText.innerText = 'View';
-                playSciFiSound(1400, 'sine', 0.15); // Success unlock tone
+                playSciFiSound(1400, 'sine', 0.15); 
             }
         });
 
