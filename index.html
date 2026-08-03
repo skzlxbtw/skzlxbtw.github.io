@@ -93,7 +93,7 @@
             100% { filter: hue-rotate(60deg) brightness(1.25); }
         }
 
-        body.hacker-mode .bio-box {
+        body.hacker-mode .bio-box, body.hacker-mode .view-btn {
             background: rgba(0, 255, 65, 0.15);
             border-color: rgba(0, 255, 65, 0.5);
             color: #00ff41;
@@ -165,7 +165,7 @@
             color: #fff;
             width: 100%;
             padding: 14px 18px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             border-radius: 14px;
             text-align: center;
             border: 1px solid rgba(0, 140, 255, 0.35);
@@ -181,6 +181,41 @@
             transform: translateY(-2px);
             border-color: rgba(0, 140, 255, 0.65);
             box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+        }
+
+        /* View Button (Matches description theme, separated from standard links) */
+        .view-btn {
+            background: rgba(0, 140, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #fff;
+            text-decoration: none;
+            width: 100%;
+            padding: 14px 20px;
+            margin-bottom: 20px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(0, 140, 255, 0.35);
+            transition: all 0.25s ease;
+            position: relative;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .view-btn i {
+            position: absolute;
+            left: 20px;
+            font-size: 18px;
+        }
+
+        .view-btn:hover, .view-btn:focus {
+            background: rgba(0, 140, 255, 0.28);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+            border: 1px solid rgba(0, 140, 255, 0.65);
         }
 
         /* Link Buttons */
@@ -246,7 +281,7 @@
             .profile-pic { width: 75px; height: 75px; }
             h1 { font-size: 18px; margin-bottom: 12px; }
             .bio-box { font-size: 12px; padding: 10px; }
-            .link-btn { padding: 10px; font-size: 13px; }
+            .view-btn, .link-btn { padding: 10px; font-size: 13px; }
             .music-controls { transform: scale(0.8); bottom: 10px; }
         }
     </style>
@@ -267,6 +302,11 @@
         <div class="bio-box">
             The one and only skzlx I am a super tuff verified Developer, Gamer, YouTuber, 3D Designer, Trader, Content Creator, Hacker, Sigma and more!
         </div>
+
+        <!-- New View Button (Linked to skibidi.html) -->
+        <a href="skibidi.html" class="view-btn">
+            <i class="fa-solid fa-eye"></i> View
+        </a>
 
         <!-- YouTube Link -->
         <a href="https://www.youtube.com/@skzlx" class="link-btn" target="_blank" rel="noopener noreferrer">
@@ -309,8 +349,8 @@
             } catch(e) {}
         }
 
-        // Attach hover & click audio feedback to elements
-        document.querySelectorAll('.link-btn, .music-controls').forEach(el => {
+        // Attach hover & click audio feedback to buttons
+        document.querySelectorAll('.link-btn, .view-btn, .music-controls').forEach(el => {
             el.addEventListener('mouseenter', () => playSciFiSound(800, 'triangle', 0.03));
             el.addEventListener('click', () => playSciFiSound(1200, 'sine', 0.05));
         });
