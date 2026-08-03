@@ -1,14 +1,198 @@
-My Links
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>skzlx</title>
+    <!-- This link imports free icons from FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <style>
+        /* 1. Animated Gradient Background */
+        body {
+            margin: 0;
+            padding: 0;
+            /* You can change these hex colors to whatever gradient you want */
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #0f0c29);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
 
+        /* This controls the smooth movement of the background */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
+        .container {
+            margin-top: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+        }
 
-    
-    
-    
-    @skzlx
-    Welcome to my corner of the web.
+        /* 2. Circle Profile Picture */
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #111;
+            object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            margin-bottom: 15px;
+        }
 
-    My Main Site
-    Latest Project
-    Social Media
+        /* 3. Username Styling */
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* 4. Link Buttons with Glassmorphism effect */
+        .link-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #fff;
+            text-decoration: none;
+            width: 85%;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* Positions the icon to the left inside the button */
+        .link-btn i {
+            position: absolute;
+            left: 20px;
+            font-size: 20px;
+        }
+
+        .link-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        /* Music Controls Button */
+        .music-controls {
+            position: fixed;
+            bottom: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+        }
+        
+        .music-controls:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Replace this src link with a link to your actual profile picture -->
+        <img src="https://via.placeholder.com/120" alt="skzlx" class="profile-pic">
+        
+        <h1>skzlx</h1>
+
+        <!-- The <i> tags hold the icons. You can find more icons at fontawesome.com -->
+        <a href="https://example.com" class="link-btn">
+            <i class="fa-solid fa-globe"></i> My Main Site
+        </a>
+        
+        <a href="https://youtube.com" class="link-btn">
+            <i class="fa-brands fa-youtube"></i> YouTube
+        </a>
+        
+        <a href="https://discord.com" class="link-btn">
+            <i class="fa-brands fa-discord"></i> Discord Server
+        </a>
+        
+        <a href="https://roblox.com" class="link-btn">
+            <i class="fa-solid fa-gamepad"></i> Roblox Profile
+        </a>
+    </div>
+
+    <!-- Background Music Player (Hidden) -->
+    <audio id="bgMusic" loop>
+        <!-- CHANGE "music.mp3" TO YOUR ACTUAL FILE NAME ONCE YOU UPLOAD IT -->
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Music Toggle Button on Screen -->
+    <div class="music-controls" onclick="toggleMusic()">
+        <i class="fa-solid fa-music" id="musicIcon"></i>
+        <span id="musicText">Tap anywhere to play</span>
+    </div>
+
+    <script>
+        const music = document.getElementById("bgMusic");
+        const musicText = document.getElementById("musicText");
+        const musicIcon = document.getElementById("musicIcon");
+        let isPlaying = false;
+
+        // This listens for the very first click on the screen to bypass browser autoplay blocks
+        document.body.addEventListener('click', function() {
+            if (!isPlaying) {
+                music.play();
+                isPlaying = true;
+                musicText.innerText = "Playing";
+                musicIcon.classList.remove('fa-music');
+                musicIcon.classList.add('fa-pause');
+            }
+        }, { once: true }); 
+
+        // Function for the button to toggle pause/play
+        function toggleMusic() {
+            // Prevent the toggle from running twice if they click the button as their first click
+            event.stopPropagation(); 
+            
+            if (isPlaying) {
+                music.pause();
+                isPlaying = false;
+                musicText.innerText = "Paused";
+                musicIcon.classList.remove('fa-pause');
+                musicIcon.classList.add('fa-play');
+            } else {
+                music.play();
+                isPlaying = true;
+                musicText.innerText = "Playing";
+                musicIcon.classList.remove('fa-play');
+                musicIcon.classList.add('fa-pause');
+            }
+        }
+    </script>
+</body>
+</html>
