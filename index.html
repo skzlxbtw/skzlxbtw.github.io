@@ -51,7 +51,7 @@
             100% { transform: scale(1.08); }
         }
 
-        /* 2. Gradient & Glitchy Overlay */
+        /* 2. Dynamic Smooth Rainbow Shifting Overlay */
         .bg-overlay {
             position: fixed;
             top: 0;
@@ -59,18 +59,19 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: linear-gradient(135deg, rgba(15, 12, 41, 0.75), rgba(48, 43, 99, 0.75), rgba(36, 36, 62, 0.85));
-            animation: glitchFlicker 4s infinite;
+            background: linear-gradient(135deg, rgba(255, 0, 128, 0.55), rgba(0, 204, 255, 0.55), rgba(128, 0, 255, 0.55));
+            opacity: 0.8;
+            animation: rainbowShift 12s linear infinite;
         }
 
-        /* Subtle glitch/flicker effect on the overlay */
-        @keyframes glitchFlicker {
-            0% { opacity: 0.95; }
-            50% { opacity: 1; }
-            52% { opacity: 0.82; }
-            54% { opacity: 1; }
-            80% { opacity: 0.91; }
-            100% { opacity: 0.95; }
+        /* Smooth continuous hue rotation for the rainbow effect */
+        @keyframes rainbowShift {
+            0% {
+                filter: hue-rotate(0deg);
+            }
+            100% {
+                filter: hue-rotate(360deg);
+            }
         }
 
         .container {
