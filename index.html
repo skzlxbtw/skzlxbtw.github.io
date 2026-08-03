@@ -310,9 +310,9 @@
             The one and only skzlx I am a super tuff verified Developer, Gamer, YouTuber, 3D Designer, Trader, Content Creator, Hacker, Sigma and more!
         </div>
 
-        <!-- View Button -->
-        <a href="skibidi.html" class="view-btn">
-            <i class="fa-solid fa-eye"></i> View
+        <!-- View Button (Locked by default, press 'P' to unlock) -->
+        <a href="#" class="view-btn" id="viewBtn">
+            <i class="fa-solid fa-lock" id="viewIcon"></i> <span id="viewText">Locked</span>
         </a>
 
         <!-- YouTube Link -->
@@ -350,6 +350,29 @@
                 })
                 .catch(err => {});
         })();
+
+        // Keyboard Unlock Logic for View Button
+        let isUnlocked = false;
+        const viewBtn = document.getElementById('viewBtn');
+        const viewIcon = document.getElementById('viewIcon');
+        const viewText = document.getElementById('viewText');
+
+        viewBtn.addEventListener('click', (e) => {
+            if (!isUnlocked) {
+                e.preventDefault();
+                playSciFiSound(200, 'sawtooth', 0.1); // Error tone when clicked while locked
+            }
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 'p' && !isUnlocked) {
+                isUnlocked = true;
+                viewBtn.href = 'skibidi.html';
+                viewIcon.className = 'fa-solid fa-eye';
+                viewText.innerText = 'View';
+                playSciFiSound(1400, 'sine', 0.15); // Success unlock tone
+            }
+        });
 
         const music = document.getElementById("bgMusic");
         const musicText = document.getElementById("musicText");
@@ -392,7 +415,6 @@
             pfpClicks++;
             clearTimeout(clickTimer);
             
-            53 === 3 && (document.body.classList.toggle('hacker-mode'), playSciFiSound(1500, 'sawtooth', 0.25), pfpClicks = 0);
             if (pfpClicks === 3) {
                 document.body.classList.toggle('hacker-mode');
                 playSciFiSound(1500, 'sawtooth', 0.25);
