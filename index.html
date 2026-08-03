@@ -40,6 +40,7 @@
             background-color: #0b0b0b;
             -webkit-user-select: none;
             user-select: none;
+            transition: background 0.5s ease;
         }
 
         /* 1. Custom GIF Background with Motion Zoom Animation */
@@ -81,6 +82,34 @@
             100% { filter: hue-rotate(360deg); }
         }
 
+        /* Hacker Mode Theme (Triggered by triple-clicking PFP) */
+        body.hacker-mode .bg-overlay {
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.5), rgba(0, 120, 40, 0.6), rgba(0, 20, 10, 0.85));
+            animation: matrixPulse 3s infinite alternate;
+        }
+
+        @keyframes matrixPulse {
+            0% { filter: hue-rotate(0deg) brightness(1); }
+            100% { filter: hue-rotate(60deg) brightness(1.25); }
+        }
+
+        body.hacker-mode .bio-box {
+            background: rgba(0, 255, 65, 0.15);
+            border-color: rgba(0, 255, 65, 0.5);
+            color: #00ff41;
+            box-shadow: 0 0 20px rgba(0,255,65,0.3);
+        }
+
+        body.hacker-mode h1 {
+            color: #00ff41;
+            text-shadow: 0 0 12px rgba(0,255,65,0.8);
+        }
+
+        body.hacker-mode .profile-pic {
+            border-color: rgba(0, 255, 65, 0.8);
+            box-shadow: 0 0 30px rgba(0,255,65,0.5);
+        }
+
         /* Universal Responsive Container */
         .container {
             display: flex;
@@ -102,9 +131,15 @@
             border: 3px solid rgba(255, 255, 255, 0.25);
             box-shadow: 0 0 25px rgba(0,0,0,0.6);
             margin-bottom: 15px;
+            cursor: pointer;
+            transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* Username */
+        .profile-pic:hover {
+            transform: scale(1.05);
+        }
+
+        /* Username with Glitch Effect */
         h1 {
             margin: 0 0 20px 0;
             font-size: 24px;
@@ -112,6 +147,14 @@
             letter-spacing: 1px;
             text-shadow: 0 2px 6px rgba(0,0,0,0.6);
             text-align: center;
+            animation: textGlitch 4s infinite;
+        }
+
+        @keyframes textGlitch {
+            0%, 90%, 100% { text-shadow: 0 2px 6px rgba(0,0,0,0.6); transform: none; }
+            92% { text-shadow: 2px 0 #00ffff, -2px 0 #ff00ff; transform: skewX(8deg); }
+            94% { text-shadow: -2px 0 #00ffff, 2px 0 #ff00ff; transform: skewX(-8deg); }
+            96% { text-shadow: 0 2px 6px rgba(0,0,0,0.6); transform: none; }
         }
 
         /* Bio / Description Box */
@@ -215,8 +258,8 @@
     <div class="bg-overlay"></div>
 
     <div class="container">
-        <!-- Profile Picture -->
-        <img src="K65J0P9HHJ.png" alt="skzlx" class="profile-pic">
+        <!-- Profile Picture (Triple-Click for Hacker Mode Easter Egg) -->
+        <img src="K65J0P9HHJ.png" alt="skzlx" class="profile-pic" id="pfp">
         
         <h1>skzlx</h1>
 
@@ -246,6 +289,53 @@
         const musicText = document.getElementById("musicText");
         const musicIcon = document.getElementById("musicIcon");
         let isPlaying = false;
+
+        // Web Audio API Sci-Fi Sound Generator
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSciFiSound(freq = 600, type = 'sine', duration = 0.05) {
+            try {
+                if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(freq / 2, audioCtx.currentTime + duration);
+                gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e) {}
+        }
+
+        // Attach hover & click audio feedback to elements
+        document.querySelectorAll('.link-btn, .music-controls').forEach(el => {
+            el.addEventListener('mouseenter', () => playSciFiSound(800, 'triangle', 0.03));
+            el.addEventListener('click', () => playSciFiSound(1200, 'sine', 0.05));
+        });
+
+        // Triple-Click Easter Egg for Hacker Mode
+        let pfpClicks = 0;
+        let clickTimer = null;
+        const pfp = document.getElementById('pfp');
+        
+        pfp.addEventListener('click', (e) => {
+            e.stopPropagation();
+            playSciFiSound(400, 'square', 0.08);
+            pfpClicks++;
+            clearTimeout(clickTimer);
+            
+            if (pfpClicks === 3) {
+                document.body.classList.toggle('hacker-mode');
+                playSciFiSound(1500, 'sawtooth', 0.25);
+                pfpClicks = 0;
+            }
+            
+            clickTimer = setTimeout(() => {
+                pfpClicks = 0;
+            }, 600);
+        });
 
         document.body.addEventListener('click', function(e) {
             if (!isPlaying) {
