@@ -4,31 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>skzlx</title>
-    <!-- This link imports free icons from FontAwesome -->
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* 1. Animated Gradient Background */
         body {
             margin: 0;
             padding: 0;
-            /* You can change these hex colors to whatever gradient you want */
-            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #0f0c29);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
             color: #ffffff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* This controls the smooth movement of the background */
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* 1. Custom GIF Background with Motion Zoom Animation */
+        .bg-gif {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            /* CHANGE "background.gif" TO MATCH THE NAME OF YOUR GIF FILE */
+            background-image: url('background.gif');
+            background-size: cover;
+            background-position: center;
+            animation: motionZoom 15s ease-in-out infinite alternate;
+        }
+
+        /* Smooth breathing / motion zoom effect */
+        @keyframes motionZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); }
+        }
+
+        /* 2. Gradient & Glitchy Overlay */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            /* Semi-transparent dark gradient to tint your GIF and keep text readable */
+            background: linear-gradient(135deg, rgba(15, 12, 41, 0.75), rgba(48, 43, 99, 0.75), rgba(36, 36, 62, 0.85));
+            animation: glitchFlicker 4s infinite;
+        }
+
+        /* Subtle glitch/flicker effect on the overlay */
+        @keyframes glitchFlicker {
+            0% { opacity: 0.95; }
+            50% { opacity: 1; }
+            52% { opacity: 0.82; }
+            54% { opacity: 1; }
+            80% { opacity: 0.91; }
+            100% { opacity: 0.95; }
         }
 
         .container {
@@ -38,9 +71,10 @@
             align-items: center;
             width: 100%;
             max-width: 500px;
+            z-index: 1;
         }
 
-        /* 2. Circle Profile Picture */
+        /* Circle Profile Picture */
         .profile-pic {
             width: 120px;
             height: 120px;
@@ -52,17 +86,17 @@
             margin-bottom: 15px;
         }
 
-        /* 3. Username Styling */
+        /* Username */
         h1 {
             margin: 0;
             font-size: 24px;
             font-weight: 600;
             letter-spacing: 1px;
             margin-bottom: 30px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
-        /* 4. Link Buttons with Glassmorphism effect */
+        /* Link Buttons */
         .link-btn {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -83,7 +117,6 @@
             font-weight: 500;
         }
 
-        /* Positions the icon to the left inside the button */
         .link-btn i {
             position: absolute;
             left: 20px;
@@ -91,22 +124,22 @@
         }
 
         .link-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.25);
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
         /* Music Controls Button */
         .music-controls {
             position: fixed;
             bottom: 20px;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             padding: 10px 20px;
             border-radius: 30px;
             cursor: pointer;
             backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
@@ -115,19 +148,23 @@
         }
         
         .music-controls:hover {
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
         }
     </style>
 </head>
 <body>
 
+    <!-- Background Layers -->
+    <div class="bg-gif"></div>
+    <div class="bg-overlay"></div>
+
     <div class="container">
-        <!-- Replace this src link with a link to your actual profile picture -->
-        <img src="https://via.placeholder.com/120" alt="skzlx" class="profile-pic">
+        <!-- Change "pfp.png" to your profile picture filename -->
+        <img src="pfp.png" alt="skzlx" class="profile-pic">
         
         <h1>skzlx</h1>
 
-        <!-- The <i> tags hold the icons. You can find more icons at fontawesome.com -->
+        <!-- Add your real links and icons here -->
         <a href="https://example.com" class="link-btn">
             <i class="fa-solid fa-globe"></i> My Main Site
         </a>
@@ -145,13 +182,11 @@
         </a>
     </div>
 
-    <!-- Background Music Player (Hidden) -->
+    <!-- Background Music Player -->
     <audio id="bgMusic" loop>
-        <!-- CHANGE "music.mp3" TO YOUR ACTUAL FILE NAME ONCE YOU UPLOAD IT -->
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Music Toggle Button on Screen -->
     <div class="music-controls" onclick="toggleMusic()">
         <i class="fa-solid fa-music" id="musicIcon"></i>
         <span id="musicText">Tap anywhere to play</span>
@@ -163,7 +198,6 @@
         const musicIcon = document.getElementById("musicIcon");
         let isPlaying = false;
 
-        // This listens for the very first click on the screen to bypass browser autoplay blocks
         document.body.addEventListener('click', function() {
             if (!isPlaying) {
                 music.play();
@@ -174,11 +208,8 @@
             }
         }, { once: true }); 
 
-        // Function for the button to toggle pause/play
         function toggleMusic() {
-            // Prevent the toggle from running twice if they click the button as their first click
             event.stopPropagation(); 
-            
             if (isPlaying) {
                 music.pause();
                 isPlaying = false;
