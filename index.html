@@ -2,33 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>skzlx</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="K65J0P9HHJ.png">
 
-    <!-- Anti-Cache & Security Headers -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <!-- Ultra Anti-Cache & Security Headers -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="no-referrer">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https: data:; img-src 'self' data: https:; media-src 'self' https:;">
 
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
             margin: 0;
             padding: 0;
             color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
-            overflow-x: hidden;
+            overflow: hidden;
+            background-color: #0b0b0b;
+            /* Prevent text selection tampering feel */
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         /* 1. Custom GIF Background with Motion Zoom Animation */
@@ -36,16 +48,16 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             z-index: -2;
             background-image: url('background.gif');
             background-size: cover;
             background-position: center;
             animation: motionZoom 15s ease-in-out infinite alternate;
+            will-change: transform;
         }
 
-        /* Smooth breathing / motion zoom effect */
         @keyframes motionZoom {
             0% { transform: scale(1); }
             100% { transform: scale(1.08); }
@@ -56,75 +68,73 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             z-index: -1;
             background: linear-gradient(135deg, rgba(255, 0, 128, 0.55), rgba(0, 204, 255, 0.55), rgba(128, 0, 255, 0.55));
             opacity: 0.8;
             animation: rainbowShift 12s linear infinite;
+            will-change: filter;
         }
 
-        /* Smooth continuous hue rotation for the rainbow effect */
         @keyframes rainbowShift {
-            0% {
-                filter: hue-rotate(0deg);
-            }
-            100% {
-                filter: hue-rotate(360deg);
-            }
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
         }
 
+        /* Universal Responsive Container (Adapts to Apple Watch, VR, TV, Phone, PC) */
         .container {
-            margin-top: 80px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%;
-            max-width: 500px;
+            width: 90%;
+            max-width: 420px;
+            padding: 20px;
             z-index: 1;
         }
 
-        /* Circle Profile Picture */
+        /* Profile Picture */
         .profile-pic {
-            width: 120px;
-            height: 120px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
             background-color: #111;
             object-fit: cover;
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            border: 3px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 25px rgba(0,0,0,0.6);
             margin-bottom: 15px;
         }
 
         /* Username */
         h1 {
-            margin: 0;
+            margin: 0 0 25px 0;
             font-size: 24px;
             font-weight: 600;
             letter-spacing: 1px;
-            margin-bottom: 30px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+            text-align: center;
         }
 
         /* Link Buttons */
         .link-btn {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             color: #fff;
             text-decoration: none;
-            width: 85%;
-            padding: 16px 20px;
-            margin-bottom: 16px;
-            border-radius: 12px;
+            width: 100%;
+            padding: 15px 20px;
+            margin-bottom: 14px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            transition: all 0.25s ease;
             position: relative;
             font-size: 16px;
             font-weight: 500;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
 
         .link-btn i {
@@ -133,32 +143,42 @@
             font-size: 20px;
         }
 
-        .link-btn:hover {
+        .link-btn:hover, .link-btn:focus {
             background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255, 255, 255, 0.6);
         }
 
         /* Music Controls Button */
         .music-controls {
             position: fixed;
             bottom: 20px;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.65);
             padding: 10px 20px;
             border-radius: 30px;
             cursor: pointer;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 10px;
             z-index: 100;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
         
         .music-controls:hover {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
+        }
+
+        /* Ultra-Small Screen Fallback (Apple Watch & Tiny Viewports) */
+        @media (max-width: 300px) {
+            .profile-pic { width: 75px; height: 75px; }
+            h1 { font-size: 18px; margin-bottom: 15px; }
+            .link-btn { padding: 10px; font-size: 13px; }
+            .music-controls { transform: scale(0.8); bottom: 10px; }
         }
     </style>
 </head>
@@ -181,7 +201,7 @@
     </div>
 
     <!-- Background Music Player -->
-    <audio id="bgMusic" loop>
+    <audio id="bgMusic" loop preload="auto">
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
@@ -196,13 +216,14 @@
         const musicIcon = document.getElementById("musicIcon");
         let isPlaying = false;
 
-        document.body.addEventListener('click', function() {
+        document.body.addEventListener('click', function(e) {
             if (!isPlaying) {
-                music.play();
-                isPlaying = true;
-                musicText.innerText = "Playing";
-                musicIcon.classList.remove('fa-music');
-                musicIcon.classList.add('fa-pause');
+                music.play().then(() => {
+                    isPlaying = true;
+                    musicText.innerText = "Playing";
+                    musicIcon.classList.remove('fa-music');
+                    musicIcon.classList.add('fa-pause');
+                }).catch(err => console.log("Audio autoplay restricted:", err));
             }
         }, { once: true }); 
 
@@ -215,11 +236,12 @@
                 musicIcon.classList.remove('fa-pause');
                 musicIcon.classList.add('fa-play');
             } else {
-                music.play();
-                isPlaying = true;
-                musicText.innerText = "Playing";
-                musicIcon.classList.remove('fa-play');
-                musicIcon.classList.add('fa-pause');
+                music.play().then(() => {
+                    isPlaying = true;
+                    musicText.innerText = "Playing";
+                    musicIcon.classList.remove('fa-play');
+                    musicIcon.classList.add('fa-pause');
+                });
             }
         }
     </script>
