@@ -694,9 +694,14 @@
             <i class="fa-solid fa-shield-halved"></i> Admin Panel
         </a>
 
-        <!-- View Button -->
+        <!-- View Button 1 (Unlocked with 'P') -->
         <a href="#" class="view-btn" id="viewBtn">
             <i class="fa-solid fa-lock" id="viewIcon"></i> <span id="viewText">Locked</span>
+        </a>
+
+        <!-- View Button 2 (Unlocked with 'M') -->
+        <a href="#" class="view-btn" id="viewBtn2">
+            <i class="fa-solid fa-lock" id="viewIcon2"></i> <span id="viewText2">Locked</span>
         </a>
 
         <!-- YouTube Link -->
@@ -787,6 +792,14 @@
                     Save & Apply Changes
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Notice Glassmorphism Modal Overlay (Triggered by Button 2) -->
+    <div class="admin-overlay" id="noticeOverlay">
+        <div class="admin-modal-card" style="text-align: center; justify-content: center; align-items: center; min-height: 150px; padding: 30px 20px;">
+            <i class="fa-solid fa-xmark admin-close-x" id="noticeCloseBtn"></i>
+            <div style="font-size: 20px; font-weight: 600; color: #ffffff; letter-spacing: 0.5px;">What are you doing?</div>
         </div>
     </div>
 
@@ -1140,7 +1153,7 @@
                 .catch(err => {});
         })();
 
-        // Keyboard Unlock Logic for View Button
+        // Keyboard Unlock Logic for Button 1 (Key: P)
         let isUnlocked = false;
         const viewBtn = document.getElementById('viewBtn');
         const viewIcon = document.getElementById('viewIcon');
@@ -1153,12 +1166,48 @@
             }
         });
 
+        // Keyboard Unlock Logic for Button 2 (Key: M) & Notice Overlay Modal
+        let isUnlocked2 = false;
+        const viewBtn2 = document.getElementById('viewBtn2');
+        const viewIcon2 = document.getElementById('viewIcon2');
+        const viewText2 = document.getElementById('viewText2');
+        const noticeOverlay = document.getElementById('noticeOverlay');
+        const noticeCloseBtn = document.getElementById('noticeCloseBtn');
+
+        viewBtn2.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (!isUnlocked2) {
+                playSciFiSound(200, 'sawtooth', 0.1); 
+            } else {
+                noticeOverlay.classList.add('active');
+                playSciFiSound(1200, 'sine', 0.05);
+            }
+        });
+
+        noticeCloseBtn.addEventListener('click', () => {
+            noticeOverlay.classList.remove('active');
+        });
+
+        noticeOverlay.addEventListener('click', (e) => {
+            if (e.target === noticeOverlay) noticeOverlay.classList.remove('active');
+        });
+
+        // Global Keydown Listener for P and M Unlocks
         window.addEventListener('keydown', (e) => {
-            if (e.key.toLowerCase() === 'p' && !isUnlocked) {
+            const key = e.key.toLowerCase();
+            
+            if (key === 'p' && !isUnlocked) {
                 isUnlocked = true;
                 viewBtn.href = 'skibidi.html';
                 viewIcon.className = 'fa-solid fa-eye';
                 viewText.innerText = 'View';
+                playSciFiSound(1400, 'sine', 0.15); 
+            }
+            
+            if (key === 'm' && !isUnlocked2) {
+                isUnlocked2 = true;
+                viewIcon2.className = 'fa-solid fa-eye';
+                viewText2.innerText = 'View';
                 playSciFiSound(1400, 'sine', 0.15); 
             }
         });
