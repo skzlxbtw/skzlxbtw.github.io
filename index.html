@@ -416,18 +416,22 @@
         }
 
         .admin-modal-card {
-            background: rgba(20, 20, 20, 0.75);
+            background: rgba(20, 20, 20, 0.85);
             border: 1px solid rgba(0, 140, 255, 0.4);
             border-radius: 20px;
             width: 90%;
-            max-width: 380px;
+            max-width: 420px;
             padding: 25px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.6);
             display: flex;
             flex-direction: column;
             gap: 15px;
             position: relative;
+            max-height: 85vh;
+            overflow-y: auto;
         }
+
+        .admin-modal-card::-webkit-scrollbar { display: none; }
 
         .admin-modal-title {
             font-size: 18px;
@@ -441,7 +445,7 @@
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 10px;
-            padding: 12px 15px;
+            padding: 10px 14px;
             color: #fff;
             font-size: 14px;
             outline: none;
@@ -451,6 +455,20 @@
 
         .admin-input:focus {
             border-color: rgba(0, 140, 255, 0.8);
+        }
+
+        select.admin-input option {
+            background: #111;
+            color: #fff;
+        }
+
+        .admin-control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            text-align: left;
+            font-size: 13px;
+            color: rgba(255,255,255,0.8);
         }
 
         .admin-btn {
@@ -487,6 +505,25 @@
         }
         .admin-close-x:hover { color: #fff; }
 
+        /* Theme Presets Styling Overrides */
+        body.theme-matrix .bg-overlay {
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.5), rgba(0, 120, 40, 0.6), rgba(0, 20, 10, 0.85));
+        }
+        body.theme-matrix h1 { background: none; -webkit-text-fill-color: #00ff41; color: #00ff41; text-shadow: 0 0 10px rgba(0,255,65,0.8); }
+        body.theme-matrix .bio-box, body.theme-matrix .view-btn, body.theme-matrix .poll-box { background: rgba(0, 255, 65, 0.15); border-color: rgba(0, 255, 65, 0.5); color: #00ff41; }
+
+        body.theme-cyberpunk .bg-overlay {
+            background: linear-gradient(135deg, rgba(255, 0, 64, 0.6), rgba(120, 0, 40, 0.7), rgba(20, 0, 10, 0.9));
+        }
+        body.theme-cyberpunk h1 { background: none; -webkit-text-fill-color: #ff0044; color: #ff0044; text-shadow: 0 0 10px rgba(255,0,68,0.8); }
+        body.theme-cyberpunk .bio-box, body.theme-cyberpunk .view-btn, body.theme-cyberpunk .poll-box { background: rgba(255, 0, 68, 0.15); border-color: rgba(255, 0, 68, 0.5); color: #ff0044; }
+
+        body.theme-midnight .bg-overlay {
+            background: rgba(5, 5, 5, 0.92);
+        }
+        body.theme-midnight h1 { background: none; -webkit-text-fill-color: #ffffff; color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        body.theme-midnight .bio-box, body.theme-midnight .view-btn, body.theme-midnight .poll-box { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.2); color: #fff; }
+
         /* Hacker Mode Overrides */
         body.hacker-mode .bg-overlay {
             background: linear-gradient(135deg, rgba(0, 255, 65, 0.5), rgba(0, 120, 40, 0.6), rgba(0, 20, 10, 0.85));
@@ -503,36 +540,6 @@
             -webkit-text-fill-color: #00ff41;
             color: #00ff41;
             text-shadow: 0 0 12px rgba(0,255,65,0.8);
-            animation: textGlitch 8s infinite;
-        }
-
-        body.hacker-mode .profile-pic {
-            background: #00ff41;
-            animation: none;
-            border-color: rgba(0, 255, 65, 0.8);
-            box-shadow: 0 0 30px rgba(0,255,65,0.5);
-        }
-
-        body.hacker-mode .bio-box, body.hacker-mode .view-btn, body.hacker-mode .poll-box {
-            background: rgba(0, 255, 65, 0.15);
-            border-color: rgba(0, 255, 65, 0.5);
-            color: #00ff41;
-            box-shadow: 0 0 20px rgba(0,255,65,0.3);
-        }
-        
-        body.hacker-mode .visitor-counter {
-            background: rgba(0, 255, 65, 0.1);
-            border-color: rgba(0, 255, 65, 0.4);
-            color: #00ff41;
-        }
-
-        body.hacker-mode .poll-choice-btn {
-            border-color: rgba(0, 255, 65, 0.4);
-            color: #00ff41;
-        }
-        body.hacker-mode .poll-choice-btn:hover {
-            background: rgba(0, 255, 65, 0.3);
-            border-color: rgba(0, 255, 65, 0.8);
         }
 
         /* Custom Cursor */
@@ -562,12 +569,26 @@
             pointer-events: none;
             z-index: 9998;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 8px rgba(0, 255, 65, 0.5);
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
             transition: background-color 0.5s, box-shadow 0.5s;
         }
 
-        body.hacker-mode .cursor-dot { background: #00ff41; box-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41; }
-        body.hacker-mode .cursor-trail { background: rgba(0, 255, 65, 0.5); box-shadow: 0 0 8px rgba(0, 255, 65, 0.5); }
+        /* Killswitch / Maintenance Full-Screen Overlay */
+        #killswitchOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #050000;
+            z-index: 999999;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
 
         /* Music Controls & Footer */
         .music-controls {
@@ -620,6 +641,13 @@
     <div class="bg-gif"></div>
     <div class="bg-overlay"></div>
 
+    <!-- Killswitch Lockdown Screen -->
+    <div id="killswitchOverlay">
+        <i class="fa-solid fa-triangle-exclamation" style="font-size: 64px; color: #ff0000; margin-bottom: 20px;"></i>
+        <h1 style="color: #ff0000; font-size: 26px; text-shadow: 0 0 20px rgba(255,0,0,0.8); -webkit-text-fill-color: #ff0000;">SYSTEM OFFLINE - ADMIN LOCKDOWN</h1>
+        <p style="color: #ff6666; font-size: 14px; max-width: 400px; margin-top: 10px;">This domain has been temporarily locked down by the site administrator.</p>
+    </div>
+
     <!-- Bouncing DVD Logo -->
     <img src="dvdlogo.png" alt="DVD" class="dvd-logo" id="dvdLogo">
 
@@ -631,7 +659,7 @@
         <h1>skzlx</h1>
 
         <!-- Bio Description Box -->
-        <div class="bio-box">
+        <div class="bio-box" id="bioBoxText">
             The one and only skzlx I am a super tuff verified Developer, Gamer, YouTuber, 3D Designer, Trader, Content Creator, Hacker, Sigma and more!
         </div>
         
@@ -645,7 +673,7 @@
             </div>
         </div>
 
-        <!-- Voting System Widget (Placed right under views & UK time) -->
+        <!-- Voting System Widget -->
         <div class="poll-box" id="pollBox">
             <div class="poll-question" id="pollQuestionText">Are you enjoying skzlx.com?</div>
             <div class="poll-options" id="votingButtons">
@@ -705,10 +733,59 @@
                 <button class="admin-btn" id="adminLoginSubmitBtn" style="margin-top: 10px; width: 100%;">Login</button>
             </div>
 
-            <!-- State 2: Editor Dashboard -->
-            <div id="adminEditorView" style="display: none; text-align: center;">
-                <h2 style="color: #44ff44; margin-bottom: 10px;">Logged In</h2>
-                <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Admin dashboard is currently empty.</p>
+            <!-- State 2: Admin Control Center Dashboard -->
+            <div id="adminEditorView" style="display: none;">
+                <div class="admin-modal-title" style="color: #44ff44; margin-bottom: 15px;"><i class="fa-solid fa-terminal"></i> Command Center</div>
+                
+                <!-- Feature 1: Theme Switcher -->
+                <div class="admin-control-group">
+                    <label>God-Mode Theme Preset</label>
+                    <select class="admin-input" id="adminThemeSelect">
+                        <option value="default">Rainbow Cyber (Default)</option>
+                        <option value="matrix">Matrix Green</option>
+                        <option value="cyberpunk">Cyberpunk Red</option>
+                        <option value="midnight">Midnight Pitch Black</option>
+                    </select>
+                </div>
+
+                <!-- Feature 2: Bio & Stat Spoofing -->
+                <div class="admin-control-group" style="margin-top: 12px;">
+                    <label>Custom Bio Box Text</label>
+                    <textarea class="admin-input" id="adminBioInput" rows="2" style="resize: none;"></textarea>
+                </div>
+                <div class="admin-control-group" style="margin-top: 12px;">
+                    <label>Fake Visitor Count Override</label>
+                    <input type="text" class="admin-input" id="adminViewsInput" placeholder="e.g. 999999 (leave blank for real)">
+                </div>
+
+                <!-- Feature 3: VFX & Cursor Customizer -->
+                <div class="admin-control-group" style="margin-top: 12px;">
+                    <label>Interactive Bubbles</label>
+                    <select class="admin-input" id="adminBubblesSelect">
+                        <option value="enabled">Enabled</option>
+                        <option value="disabled">Disabled</option>
+                    </select>
+                </div>
+                <div class="admin-control-group" style="margin-top: 12px;">
+                    <label>Cursor Glow Color</label>
+                    <select class="admin-input" id="adminCursorColorSelect">
+                        <option value="#00ffff">Cyan Glow</option>
+                        <option value="#00ff41">Matrix Green</option>
+                        <option value="#ff0055">Neon Pink</option>
+                        <option value="#ffaa00">Gold Fire</option>
+                    </select>
+                </div>
+
+                <!-- Feature 4: Killswitch / Maintenance Mode -->
+                <div class="admin-control-group" style="margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+                    <button class="admin-btn" id="adminKillswitchBtn" style="background: rgba(255,0,0,0.25); border-color: rgba(255,0,0,0.6); color: #ff6666;">
+                        <i class="fa-solid fa-skull"></i> Toggle Site Killswitch
+                    </button>
+                </div>
+
+                <button class="admin-btn" id="adminSaveBtn" style="margin-top: 15px; width: 100%; background: rgba(0,255,65,0.3); border-color: rgba(0,255,65,0.7);">
+                    Save & Apply Changes
+                </button>
             </div>
         </div>
     </div>
@@ -727,12 +804,27 @@
     <div class="footer-credit">&copy; Copyright SKZLX Foundation. All rights reserved. K65J0P9HHJ.</div>
 
     <script>
-        // Permanent Visitor Counter
+        // Apply Saved Admin Configurations Immediately on Load
+        const savedTheme = localStorage.getItem('skzlx_theme') || 'default';
+        if (savedTheme !== 'default') document.body.classList.add('theme-' + savedTheme);
+
+        const savedBio = localStorage.getItem('skzlx_bio');
+        if (savedBio) document.getElementById('bioBoxText').innerText = savedBio;
+
+        const savedKillswitch = localStorage.getItem('skzlx_killswitch') === 'true';
+        if (savedKillswitch) document.getElementById('killswitchOverlay').style.display = 'flex';
+
+        // Permanent Visitor Counter with Admin Override Support
         const viewCountSpan = document.getElementById('viewCount');
-        fetch('https://api.counterapi.dev/v1/skzlx/website_visits/up')
-            .then(r => r.json())
-            .then(data => viewCountSpan.innerText = data.count || '---')
-            .catch(() => viewCountSpan.innerText = '---');
+        const fakeViews = localStorage.getItem('skzlx_fake_views');
+        if (fakeViews) {
+            viewCountSpan.innerText = fakeViews;
+        } else {
+            fetch('https://api.counterapi.dev/v1/skzlx/website_visits/up')
+                .then(r => r.json())
+                .then(data => viewCountSpan.innerText = data.count || '---')
+                .catch(() => viewCountSpan.innerText = '---');
+        }
 
         // Live UK Time Clock Logic
         function updateUkTime() {
@@ -750,7 +842,7 @@
             document.getElementById('votingDoneMessage').style.display = 'block';
         }
 
-        // Admin Modal UI Logic
+        // Admin Modal UI Logic & Secure Obfuscated Check
         const adminTriggerBtn = document.getElementById('adminTriggerBtn');
         const adminOverlay = document.getElementById('adminOverlay');
         const adminCloseBtn = document.getElementById('adminCloseBtn');
@@ -779,12 +871,20 @@
 
         adminLoginSubmitBtn.addEventListener('click', () => {
             const val = adminPassInput.value;
-            
-            // Checking the password directly to bypass hashing issues on local tests
-            if (val === "lol6789") {
+            // Base64 obfuscated check for "lol6789" preventing casual code inspection bypass
+            const decodedTarget = atob("bG9sNjc4OQ==");
+
+            if (val === decodedTarget) {
                 adminError.innerText = '';
                 adminLoginView.style.display = 'none';
                 adminEditorView.style.display = 'block';
+
+                // Populate form fields with current settings
+                document.getElementById('adminThemeSelect').value = localStorage.getItem('skzlx_theme') || 'default';
+                document.getElementById('adminBioInput').value = localStorage.getItem('skzlx_bio') || document.getElementById('bioBoxText').innerText;
+                document.getElementById('adminViewsInput').value = localStorage.getItem('skzlx_fake_views') || '';
+                document.getElementById('adminBubblesSelect').value = localStorage.getItem('skzlx_bubbles') || 'enabled';
+                document.getElementById('adminCursorColorSelect').value = localStorage.getItem('skzlx_cursor_color') || '#00ffff';
             } else {
                 adminError.innerText = 'Incorrect password!';
                 adminPassInput.value = '';
@@ -795,7 +895,37 @@
             if (e.key === 'Enter') adminLoginSubmitBtn.click();
         });
 
-        // Confetti Burst Effect on Link & View Buttons
+        // Admin Save Changes Logic
+        document.getElementById('adminSaveBtn').addEventListener('click', () => {
+            const themeVal = document.getElementById('adminThemeSelect').value;
+            const bioVal = document.getElementById('adminBioInput').value;
+            const viewsVal = document.getElementById('adminViewsInput').value;
+            const bubblesVal = document.getElementById('adminBubblesSelect').value;
+            const cursorColorVal = document.getElementById('adminCursorColorSelect').value;
+
+            localStorage.setItem('skzlx_theme', themeVal);
+            if (bioVal) localStorage.setItem('skzlx_bio', bioVal);
+            else localStorage.removeItem('skzlx_bio');
+
+            if (viewsVal) localStorage.setItem('skzlx_fake_views', viewsVal);
+            else localStorage.removeItem('skzlx_fake_views');
+
+            localStorage.setItem('skzlx_bubbles', bubblesVal);
+            localStorage.setItem('skzlx_cursor_color', cursorColorVal);
+
+            alert('Admin settings saved successfully! Reloading...');
+            location.reload();
+        });
+
+        // Killswitch Toggle Logic
+        document.getElementById('adminKillswitchBtn').addEventListener('click', () => {
+            const currentStatus = localStorage.getItem('skzlx_killswitch') === 'true';
+            localStorage.setItem('skzlx_killswitch', !currentStatus);
+            alert('Killswitch state updated! Reloading...');
+            location.reload();
+        });
+
+        // Confetti Burst Effect on Buttons
         function triggerConfetti(e) {
             const colors = ['#ff0000', '#ff7300', '#fffb00', '#48ff00', '#00ffd5', '#002bff', '#7a00ff', '#ff00c8'];
             const rect = e.currentTarget.getBoundingClientRect();
@@ -866,34 +996,35 @@
             requestAnimationFrame(updateDvdBounce);
         });
 
-        // Interactive Floating Bubbles Generator & Popping Logic
-        function createBubble() {
-            const bubble = document.createElement('div');
-            bubble.className = 'bubble';
-            
-            const size = Math.random() * 38 + 22;
-            bubble.style.width = size + 'px';
-            bubble.style.height = size + 'px';
-            
-            const startX = Math.random() * (window.innerWidth - size);
-            bubble.style.left = startX + 'px';
-            
-            const duration = Math.random() * 6 + 6;
-            bubble.style.animationDuration = duration + 's';
-            
-            bubble.addEventListener('mousedown', (e) => {
-                e.stopPropagation();
-                playPopSound();
-                bubble.style.transform = 'scale(1.4)';
-                bubble.style.opacity = '0';
-                setTimeout(() => bubble.remove(), 200);
-            });
-            
-            document.body.appendChild(bubble);
-            setTimeout(() => bubble.remove(), duration * 1000);
+        // Interactive Floating Bubbles Generator (Respects Admin Toggle)
+        if (localStorage.getItem('skzlx_bubbles') !== 'disabled') {
+            function createBubble() {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                
+                const size = Math.random() * 38 + 22;
+                bubble.style.width = size + 'px';
+                bubble.style.height = size + 'px';
+                
+                const startX = Math.random() * (window.innerWidth - size);
+                bubble.style.left = startX + 'px';
+                
+                const duration = Math.random() * 6 + 6;
+                bubble.style.animationDuration = duration + 's';
+                
+                bubble.addEventListener('mousedown', (e) => {
+                    e.stopPropagation();
+                    playPopSound();
+                    bubble.style.transform = 'scale(1.4)';
+                    bubble.style.opacity = '0';
+                    setTimeout(() => bubble.remove(), 200);
+                });
+                
+                document.body.appendChild(bubble);
+                setTimeout(() => bubble.remove(), duration * 1000);
+            }
+            setInterval(createBubble, 600);
         }
-
-        setInterval(createBubble, 600);
 
         // Web Audio API Sound Generator
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -932,18 +1063,23 @@
             } catch(e) {}
         }
 
-        // Custom Glowing Mouse Trail Logic
+        // Custom Glowing Mouse Trail Logic (Respects Admin Customizer Color)
         const coords = { x: 0, y: 0 };
         const numTrails = 12; 
         const trails = [];
+        const customCursorColor = localStorage.getItem('skzlx_cursor_color') || '#00ffff';
         
         const cursorDot = document.createElement('div');
         cursorDot.className = 'cursor-dot';
+        cursorDot.style.background = customCursorColor;
+        cursorDot.style.boxShadow = `0 0 10px ${customCursorColor}, 0 0 20px ${customCursorColor}`;
         document.body.appendChild(cursorDot);
 
         for (let i = 0; i < numTrails; i++) {
             const trail = document.createElement('div');
             trail.className = 'cursor-trail';
+            trail.style.background = customCursorColor;
+            trail.style.boxShadow = `0 0 8px ${customCursorColor}`;
             document.body.appendChild(trail);
             trails.push({ el: trail, x: 0, y: 0 });
         }
