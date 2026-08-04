@@ -114,6 +114,32 @@
             filter: drop-shadow(0 0 10px #00ff41) sepia(1) hue-rotate(60deg) saturate(6);
         }
 
+        /* Interactive Floating Bubbles */
+        .bubble {
+            position: fixed;
+            bottom: -60px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.5), rgba(0, 140, 255, 0.2));
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            pointer-events: auto; /* Allows clicking */
+            z-index: 0;
+            cursor: pointer !important;
+            animation: floatUp linear forwards;
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.4), 0 0 10px rgba(0, 140, 255, 0.3);
+            transition: transform 0.15s ease, opacity 0.2s ease;
+        }
+
+        body.hacker-mode .bubble {
+            background: radial-gradient(circle at 30% 30%, rgba(0, 255, 65, 0.5), rgba(0, 50, 10, 0.2));
+            border-color: rgba(0, 255, 65, 0.5);
+            box-shadow: inset 0 0 12px rgba(0, 255, 65, 0.4), 0 0 10px rgba(0, 255, 65, 0.3);
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 0.85; }
+            100% { transform: translateY(calc(-100vh - 100px)) scale(1); opacity: 0.2; }
+        }
+
         /* Universal Responsive Container */
         .container {
             display: flex;
@@ -344,7 +370,7 @@
             pointer-events: none;
             z-index: 9998;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 8px rgba(0, 255, 65, 0.5);
             transition: background-color 0.5s, box-shadow 0.5s;
         }
 
@@ -517,6 +543,81 @@
             requestAnimationFrame(updateDvdBounce);
         });
 
+        // Interactive Floating Bubbles Generator & Popping Logic
+        function createBubble() {
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            
+            // Random size between 22px and 60px
+            const size = Math.random() * 38 + 22;
+            bubble.style.width = size + 'px';
+            bubble.style.height = size + 'px';
+            
+            // Random horizontal position across screen
+            const startX = Math.random() * (window.innerWidth - size);
+            bubble.style.left = startX + 'px';
+            
+            // Random float duration between 6s and 12s
+            const duration = Math.random() * 6 + 6;
+            bubble.style.animationDuration = duration + 's';
+            
+            // Click to pop and play pop sound
+            bubble.addEventListener('mousedown', (e) => {
+                e.stopPropagation();
+                playPopSound();
+                bubble.style.transform = 'scale(1.4)';
+                bubble.style.opacity = '0';
+                setTimeout(() => bubble.remove(), 200);
+            });
+            
+            document.body.appendChild(bubble);
+            
+            // Cleanup after animation finishes
+            setTimeout(() => {
+                bubble.remove();
+            }, duration * 1000);
+        }
+
+        // Spawn a new bubble every 600ms
+        setInterval(createBubble, 600);
+
+        // Web Audio API Sound Generator (Sci-Fi, Button Clicks, and Bubble Pop)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSciFiSound(freq = 600, type = 'sine', duration = 0.05) {
+            try {
+                if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(freq / 2, audioCtx.currentTime + duration);
+                gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e) {}
+        }
+
+        function playPopSound() {
+            try {
+                if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(350, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(950, audioCtx.currentTime + 0.07);
+                gain.gain.setValueAtTime(0.09, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.07);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.07);
+            } catch(e) {}
+        }
+
         // Custom Glowing Mouse Trail Logic
         const coords = { x: 0, y: 0 };
         const numTrails = 12; 
@@ -621,25 +722,6 @@
         const musicText = document.getElementById("musicText");
         const musicIcon = document.getElementById("musicIcon");
         let isPlaying = false;
-
-        // Web Audio API Sci-Fi Sound Generator
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playSciFiSound(freq = 600, type = 'sine', duration = 0.05) {
-            try {
-                if (audioCtx.state === 'suspended') { audioCtx.resume(); }
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = type;
-                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(freq / 2, audioCtx.currentTime + duration);
-                gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + duration);
-            } catch(e) {}
-        }
 
         document.querySelectorAll('.link-btn, .view-btn, .music-controls').forEach(el => {
             el.addEventListener('mouseenter', () => playSciFiSound(800, 'triangle', 0.03));
