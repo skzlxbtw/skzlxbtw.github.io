@@ -154,15 +154,15 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             
-            /* Mix both animations */
-            animation: rainbowCycle 4s linear infinite, textGlitch 4s infinite;
+            /* Mix both animations - Slowed down glitch to 8 seconds so it stays readable */
+            animation: rainbowCycle 4s linear infinite, textGlitch 8s infinite;
         }
 
         @keyframes textGlitch {
-            0%, 90%, 100% { transform: none; }
-            92% { text-shadow: 2px 0 rgba(0,255,255,0.7), -2px 0 rgba(255,0,255,0.7); transform: skewX(8deg); }
-            94% { text-shadow: -2px 0 rgba(0,255,255,0.7), 2px 0 rgba(255,0,255,0.7); transform: skewX(-8deg); }
-            96% { text-shadow: none; transform: none; }
+            0%, 96%, 100% { transform: none; text-shadow: none; }
+            97% { text-shadow: 2px 0 rgba(0,255,255,0.7), -2px 0 rgba(255,0,255,0.7); transform: skewX(8deg); }
+            98% { text-shadow: -2px 0 rgba(0,255,255,0.7), 2px 0 rgba(255,0,255,0.7); transform: skewX(-8deg); }
+            99% { text-shadow: none; transform: none; }
         }
 
         /* Bio / Description Box */
@@ -191,21 +191,32 @@
             box-shadow: 0 12px 25px rgba(0,0,0,0.4);
         }
 
-        /* Global Visitor Counter Badge */
+        /* Global Visitor Counter Badge (Styled like Description Box) */
         .visitor-counter {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            margin-bottom: 20px;
-            color: #ddd;
+            background: rgba(0, 140, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #fff;
+            width: 100%;
+            padding: 14px 18px;
+            margin-bottom: 12px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 1px solid rgba(0, 140, 255, 0.35);
+            font-size: 14px;
+            font-weight: 400;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            transition: all 0.25s ease;
+        }
+
+        .visitor-counter:hover {
+            background: rgba(0, 140, 255, 0.28);
+            transform: translateY(-2px);
+            border-color: rgba(0, 140, 255, 0.65);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
         }
 
         /* View Button & Social Link Buttons */
@@ -270,7 +281,7 @@
             -webkit-text-fill-color: #00ff41; /* Removes rainbow text */
             color: #00ff41;
             text-shadow: 0 0 12px rgba(0,255,65,0.8);
-            animation: textGlitch 4s infinite; /* Keeps glitch */
+            animation: textGlitch 8s infinite; /* Keeps the adjusted glitch */
         }
 
         body.hacker-mode .profile-pic {
@@ -280,17 +291,11 @@
             box-shadow: 0 0 30px rgba(0,255,65,0.5);
         }
 
-        body.hacker-mode .bio-box, body.hacker-mode .view-btn {
+        body.hacker-mode .bio-box, body.hacker-mode .view-btn, body.hacker-mode .visitor-counter {
             background: rgba(0, 255, 65, 0.15);
             border-color: rgba(0, 255, 65, 0.5);
             color: #00ff41;
             box-shadow: 0 0 20px rgba(0,255,65,0.3);
-        }
-        
-        body.hacker-mode .visitor-counter {
-            background: rgba(0, 255, 65, 0.1);
-            border-color: rgba(0, 255, 65, 0.4);
-            color: #00ff41;
         }
 
         /* Custom Cursor Styles */
@@ -320,7 +325,7 @@
             pointer-events: none;
             z-index: 9998;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 8px rgba(0, 255, 65, 0.5);
             transition: background-color 0.5s, box-shadow 0.5s;
         }
 
@@ -401,9 +406,9 @@
             The one and only skzlx I am a super tuff verified Developer, Gamer, YouTuber, 3D Designer, Trader, Content Creator, Hacker, Sigma and more!
         </div>
         
-        <!-- Visitor Counter API Output -->
+        <!-- Global Visitor Counter API Output -->
         <div class="visitor-counter">
-            <i class="fa-solid fa-eye"></i> <span id="viewCount">Loading...</span> Visitors
+            <i class="fa-solid fa-eye"></i> <span id="viewCount">...</span> Visitors
         </div>
 
         <!-- View Button -->
@@ -413,22 +418,22 @@
 
         <!-- YouTube Link -->
         <a href="https://www.youtube.com/@skzlx" class="link-btn" target="_blank" rel="noopener noreferrer">
-            <i class="fa-brands fa-youtube"></i> YouTube skzlx
+            <i class="fa-brands fa-youtube"></i> YouTube: skzlx
         </a>
         
         <!-- Instagram Link -->
         <a href="https://www.instagram.com/christopher_whitehall/" class="link-btn" target="_blank" rel="noopener noreferrer">
-            <i class="fa-brands fa-instagram"></i> Instagram christopher_whitehall
+            <i class="fa-brands fa-instagram"></i> Instagram: christopher_whitehall
         </a>
         
         <!-- Discord (No Link - Just visual and hover effects) -->
         <div class="link-btn">
-            <i class="fa-brands fa-discord"></i> Discord 0l9m
+            <i class="fa-brands fa-discord"></i> Discord: 0l9m
         </div>
         
         <!-- Snapchat (No Link - Just visual and hover effects) -->
         <div class="link-btn">
-            <i class="fa-brands fa-snapchat"></i> Snapchat skzlxo
+            <i class="fa-brands fa-snapchat"></i> Snapchat: skzlxo
         </div>
     </div>
 
@@ -446,27 +451,12 @@
     <div class="footer-credit">&copy; Copyright SKZLX Foundation. All rights reserved. K65J0P9HHJ.</div>
 
     <script>
-        // Unique Visitor Counter Logic
+        // Permanent Global Visitor Counter (Increments on every visit/refresh)
         const viewCountSpan = document.getElementById('viewCount');
-        const counterApiUrl = 'https://api.counterapi.dev/v1/skzlx/website_visits';
-        
-        // Checks LocalStorage so a single person refreshing doesn't artificially inflate the score
-        if (localStorage.getItem('skzlx_visited_flag')) {
-            // Already visited, just fetch current exact count
-            fetch(counterApiUrl)
-                .then(r => r.json())
-                .then(data => viewCountSpan.innerText = data.count || '---')
-                .catch(() => viewCountSpan.innerText = 'Online');
-        } else {
-            // New unique visitor! Trigger the API to add +1
-            fetch(counterApiUrl + '/up')
-                .then(r => r.json())
-                .then(data => {
-                    viewCountSpan.innerText = data.count || '---';
-                    localStorage.setItem('skzlx_visited_flag', 'true');
-                })
-                .catch(() => viewCountSpan.innerText = 'Online');
-        }
+        fetch('https://api.counterapi.dev/v1/skzlx/website_visits/up')
+            .then(r => r.json())
+            .then(data => viewCountSpan.innerText = data.count || '---')
+            .catch(() => viewCountSpan.innerText = '---');
 
         // Custom Glowing Mouse Trail Logic
         const coords = { x: 0, y: 0 };
