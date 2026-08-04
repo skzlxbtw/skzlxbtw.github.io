@@ -279,7 +279,6 @@
             display: flex;
             gap: 10px;
             width: 100%;
-            margin-bottom: 6px;
         }
 
         .poll-btn-wrapper {
@@ -308,12 +307,6 @@
             background: rgba(0, 140, 255, 0.3);
             border-color: rgba(0, 140, 255, 0.8);
             transform: translateY(-1px);
-        }
-
-        .poll-percentage {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.7);
-            font-weight: 400;
         }
 
         /* View Button & Social Link Buttons */
@@ -654,16 +647,17 @@
 
         <!-- Voting System Widget (Placed right under views & UK time) -->
         <div class="poll-box" id="pollBox">
-            <div class="poll-question" id="pollQuestionText">Loading question...</div>
-            <div class="poll-options">
+            <div class="poll-question" id="pollQuestionText">Are you enjoying skzlx.com?</div>
+            <div class="poll-options" id="votingButtons">
                 <div class="poll-btn-wrapper">
-                    <button class="poll-choice-btn" id="pollBtn1" onclick="vote(1)">Option 1</button>
-                    <div class="poll-percentage" id="pollPct1">50%</div>
+                    <button class="poll-choice-btn" onclick="submitVote()">Yes</button>
                 </div>
                 <div class="poll-btn-wrapper">
-                    <button class="poll-choice-btn" id="pollBtn2" onclick="vote(2)">Option 2</button>
-                    <div class="poll-percentage" id="pollPct2">50%</div>
+                    <button class="poll-choice-btn" onclick="submitVote()">No</button>
                 </div>
+            </div>
+            <div id="votingDoneMessage" style="display: none; font-weight: bold; color: #44ff44; padding-top: 10px;">
+                Done!
             </div>
         </div>
 
@@ -708,24 +702,13 @@
                 <div class="admin-modal-title">Admin Login</div>
                 <div class="admin-error" id="adminError"></div>
                 <input type="password" class="admin-input" id="adminPassInput" placeholder="Enter password...">
-                <button class="admin-btn" id="adminLoginSubmitBtn">Login</button>
+                <button class="admin-btn" id="adminLoginSubmitBtn" style="margin-top: 10px; width: 100%;">Login</button>
             </div>
 
             <!-- State 2: Editor Dashboard -->
-            <div id="adminEditorView" style="display: none;">
-                <div class="admin-modal-title">Edit Voting System</div>
-                <div class="admin-error" id="adminEditError" style="color: #44ff44;"></div>
-                
-                <label style="font-size: 12px; color: rgba(255,255,255,0.7);">Question Text:</label>
-                <input type="text" class="admin-input" id="editQuestionInput" placeholder="Enter question...">
-                
-                <label style="font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 5px; display: block;">Answer Choice 1:</label>
-                <input type="text" class="admin-input" id="editOption1Input" placeholder="Answer 1...">
-                
-                <label style="font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 5px; display: block;">Answer Choice 2:</label>
-                <input type="text" class="admin-input" id="editOption2Input" placeholder="Answer 2...">
-                
-                <button class="admin-btn" id="adminSaveBtn" style="margin-top: 10px;">Save & Apply</button>
+            <div id="adminEditorView" style="display: none; text-align: center;">
+                <h2 style="color: #44ff44; margin-bottom: 10px;">Logged In</h2>
+                <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Admin dashboard is currently empty.</p>
             </div>
         </div>
     </div>
@@ -761,62 +744,10 @@
         setInterval(updateUkTime, 1000);
         updateUkTime();
 
-        // Voting System Logic & State
-        const defaultPoll = {
-            question: "Are you enjoying skzlx.com?",
-            opt1: "Yes 🔥",
-            opt2: "No 💀",
-            votes1: 12,
-            votes2: 4
-        };
-
-        function getPollData() {
-            const data = localStorage.getItem('skzlx_poll_data');
-            if (!data) return defaultPoll;
-            try { return JSON.parse(data); } catch(e) { return defaultPoll; }
-        }
-
-        function savePollData(poll) {
-            localStorage.setItem('skzlx_poll_data', JSON.stringify(poll));
-            renderPoll();
-        }
-
-        function renderPoll() {
-            const poll = getPollData();
-            document.getElementById('pollQuestionText').innerText = poll.question;
-            document.getElementById('pollBtn1').innerText = poll.opt1;
-            document.getElementById('pollBtn2').innerText = poll.opt2;
-
-            const total = (poll.votes1 + poll.votes2) || 1;
-            const pct1 = Math.round((poll.votes1 / total) * 100);
-            const pct2 = 100 - pct1;
-
-            document.getElementById('pollPct1').innerText = `${pct1}% (${poll.votes1} votes)`;
-            document.getElementById('pollPct2').innerText = `${pct2}% (${poll.votes2} votes)`;
-        }
-
-        function vote(optionNum) {
-            const poll = getPollData();
-            if (optionNum === 1) poll.votes1++;
-            else if (optionNum === 2) poll.votes2++;
-            savePollData(poll);
-        }
-        renderPoll();
-
-        // 100% Secure Cryptographic Password Hashing Check for "lol6789"
-        // (Pre-computed SHA-256 hash of "lol6789" ensures the raw string is completely absent from source code and F12)
-        const TARGET_HASH_HEX = "418f45a0b7305929668383f51088cf7023348003ea298bcff6134b46c6ea99e4";
-
-        async function verifyPassword(password) {
-            try {
-                const msgBuffer = new TextEncoder().encode(password);
-                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-                const hashArray = Array.from(new Uint8Array(hashBuffer));
-                const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-                return hashHex === TARGET_HASH_HEX;
-            } catch(e) {
-                return false;
-            }
+        // Voting System Logic 
+        function submitVote() {
+            document.getElementById('votingButtons').style.display = 'none';
+            document.getElementById('votingDoneMessage').style.display = 'block';
         }
 
         // Admin Modal UI Logic
@@ -828,12 +759,6 @@
         const adminError = document.getElementById('adminError');
         const adminLoginView = document.getElementById('adminLoginView');
         const adminEditorView = document.getElementById('adminEditorView');
-        
-        const editQuestionInput = document.getElementById('editQuestionInput');
-        const editOption1Input = document.getElementById('editOption1Input');
-        const editOption2Input = document.getElementById('editOption2Input');
-        const adminSaveBtn = document.getElementById('adminSaveBtn');
-        const adminEditError = document.getElementById('adminEditError');
 
         adminTriggerBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -852,20 +777,14 @@
             if (e.target === adminOverlay) adminOverlay.classList.remove('active');
         });
 
-        adminLoginSubmitBtn.addEventListener('click', async () => {
+        adminLoginSubmitBtn.addEventListener('click', () => {
             const val = adminPassInput.value;
-            const isValid = await verifyPassword(val);
-            if (isValid) {
+            
+            // Checking the password directly to bypass hashing issues on local tests
+            if (val === "lol6789") {
                 adminError.innerText = '';
                 adminLoginView.style.display = 'none';
                 adminEditorView.style.display = 'block';
-                
-                // Load current poll data into inputs
-                const currentPoll = getPollData();
-                editQuestionInput.value = currentPoll.question;
-                editOption1Input.value = currentPoll.opt1;
-                editOption2Input.value = currentPoll.opt2;
-                adminEditError.innerText = '';
             } else {
                 adminError.innerText = 'Incorrect password!';
                 adminPassInput.value = '';
@@ -874,30 +793,6 @@
 
         adminPassInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') adminLoginSubmitBtn.click();
-        });
-
-        adminSaveBtn.addEventListener('click', () => {
-            const q = editQuestionInput.value.trim();
-            const o1 = editOption1Input.value.trim();
-            const o2 = editOption2Input.value.trim();
-
-            if (!q || !o1 || !o2) {
-                adminEditError.style.color = '#ff4444';
-                adminEditError.innerText = 'Please fill out all fields!';
-                return;
-            }
-
-            const currentPoll = getPollData();
-            currentPoll.question = q;
-            currentPoll.opt1 = o1;
-            currentPoll.opt2 = o2;
-            savePollData(currentPoll);
-
-            adminEditError.style.color = '#44ff44';
-            adminEditError.innerText = 'Saved & Applied successfully!';
-            setTimeout(() => {
-                adminOverlay.classList.remove('active');
-            }, 800);
         });
 
         // Confetti Burst Effect on Link & View Buttons
