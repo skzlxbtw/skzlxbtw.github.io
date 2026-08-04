@@ -97,6 +97,23 @@
             100% { background-position: 0% 50%; }
         }
 
+        /* Bouncing DVD Logo */
+        .dvd-logo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 90px;
+            height: auto;
+            pointer-events: none;
+            z-index: 0;
+            will-change: transform;
+            transition: filter 0.3s ease;
+        }
+
+        body.hacker-mode .dvd-logo {
+            filter: drop-shadow(0 0 10px #00ff41) sepia(1) hue-rotate(60deg) saturate(6);
+        }
+
         /* Universal Responsive Container */
         .container {
             display: flex;
@@ -154,7 +171,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             
-            /* Mix both animations - Slowed down glitch to 8 seconds so it stays readable */
+            /* Slowed down glitch to 8 seconds so it stays readable */
             animation: rainbowCycle 4s linear infinite, textGlitch 8s infinite;
         }
 
@@ -191,32 +208,28 @@
             box-shadow: 0 12px 25px rgba(0,0,0,0.4);
         }
 
-        /* Global Visitor Counter Badge (Styled like Description Box) */
+        /* Compact Blue Visitor Counter Badge */
         .visitor-counter {
             background: rgba(0, 140, 255, 0.15);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             color: #fff;
-            width: 100%;
-            padding: 14px 18px;
-            margin-bottom: 12px;
-            border-radius: 14px;
-            display: flex;
+            padding: 6px 16px;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 8px;
             border: 1px solid rgba(0, 140, 255, 0.35);
-            font-size: 14px;
-            font-weight: 400;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            font-size: 13px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             transition: all 0.25s ease;
         }
 
         .visitor-counter:hover {
             background: rgba(0, 140, 255, 0.28);
-            transform: translateY(-2px);
             border-color: rgba(0, 140, 255, 0.65);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+            transform: translateY(-2px);
         }
 
         /* View Button & Social Link Buttons */
@@ -278,24 +291,30 @@
 
         body.hacker-mode h1 {
             background: none;
-            -webkit-text-fill-color: #00ff41; /* Removes rainbow text */
+            -webkit-text-fill-color: #00ff41;
             color: #00ff41;
             text-shadow: 0 0 12px rgba(0,255,65,0.8);
-            animation: textGlitch 8s infinite; /* Keeps the adjusted glitch */
+            animation: textGlitch 8s infinite;
         }
 
         body.hacker-mode .profile-pic {
-            background: #00ff41; /* Removes rainbow border, goes solid green */
+            background: #00ff41;
             animation: none;
             border-color: rgba(0, 255, 65, 0.8);
             box-shadow: 0 0 30px rgba(0,255,65,0.5);
         }
 
-        body.hacker-mode .bio-box, body.hacker-mode .view-btn, body.hacker-mode .visitor-counter {
+        body.hacker-mode .bio-box, body.hacker-mode .view-btn {
             background: rgba(0, 255, 65, 0.15);
             border-color: rgba(0, 255, 65, 0.5);
             color: #00ff41;
             box-shadow: 0 0 20px rgba(0,255,65,0.3);
+        }
+        
+        body.hacker-mode .visitor-counter {
+            background: rgba(0, 255, 65, 0.1);
+            border-color: rgba(0, 255, 65, 0.4);
+            color: #00ff41;
         }
 
         /* Custom Cursor Styles */
@@ -325,11 +344,10 @@
             pointer-events: none;
             z-index: 9998;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 8px rgba(0, 255, 65, 0.5);
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
             transition: background-color 0.5s, box-shadow 0.5s;
         }
 
-        /* Hacker mode cursor styling */
         body.hacker-mode .cursor-dot {
             background: #00ff41;
             box-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41;
@@ -394,6 +412,9 @@
     <div class="bg-gif"></div>
     <div class="bg-overlay"></div>
 
+    <!-- Bouncing DVD Logo Element -->
+    <img src="dvdlogo.png" alt="DVD" class="dvd-logo" id="dvdLogo">
+
     <div class="container">
         <!-- Profile Picture -->
         <img src="K65J0P9HHJ.png" alt="skzlx" class="profile-pic" id="pfp">
@@ -406,7 +427,7 @@
             The one and only skzlx I am a super tuff verified Developer, Gamer, YouTuber, 3D Designer, Trader, Content Creator, Hacker, Sigma and more!
         </div>
         
-        <!-- Global Visitor Counter API Output -->
+        <!-- Compact Visitor Counter Badge -->
         <div class="visitor-counter">
             <i class="fa-solid fa-eye"></i> <span id="viewCount">...</span> Visitors
         </div>
@@ -426,12 +447,12 @@
             <i class="fa-brands fa-instagram"></i> Instagram: christopher_whitehall
         </a>
         
-        <!-- Discord (No Link - Just visual and hover effects) -->
+        <!-- Discord (No Link) -->
         <div class="link-btn">
             <i class="fa-brands fa-discord"></i> Discord: 0l9m
         </div>
         
-        <!-- Snapchat (No Link - Just visual and hover effects) -->
+        <!-- Snapchat (No Link) -->
         <div class="link-btn">
             <i class="fa-brands fa-snapchat"></i> Snapchat: skzlxo
         </div>
@@ -451,12 +472,50 @@
     <div class="footer-credit">&copy; Copyright SKZLX Foundation. All rights reserved. K65J0P9HHJ.</div>
 
     <script>
-        // Permanent Global Visitor Counter (Increments on every visit/refresh)
+        // Permanent Visitor Counter (Increments every refresh)
         const viewCountSpan = document.getElementById('viewCount');
         fetch('https://api.counterapi.dev/v1/skzlx/website_visits/up')
             .then(r => r.json())
             .then(data => viewCountSpan.innerText = data.count || '---')
             .catch(() => viewCountSpan.innerText = '---');
+
+        // Bouncing DVD Logo Animation Logic
+        const dvdLogo = document.getElementById('dvdLogo');
+        let dvdX = Math.random() * (window.innerWidth - 100);
+        let dvdY = Math.random() * (window.innerHeight - 60);
+        let dvdVx = 2.2;
+        let dvdVy = 2.2;
+
+        function updateDvdBounce() {
+            const maxX = window.innerWidth - dvdLogo.clientWidth;
+            const maxY = window.innerHeight - dvdLogo.clientHeight;
+
+            dvdX += dvdVx;
+            dvdY += dvdVy;
+
+            if (dvdX <= 0) {
+                dvdX = 0;
+                dvdVx = -dvdVx;
+            } else if (dvdX >= maxX) {
+                dvdX = maxX;
+                dvdVx = -dvdVx;
+            }
+
+            if (dvdY <= 0) {
+                dvdY = 0;
+                dvdVy = -dvdVy;
+            } else if (dvdY >= maxY) {
+                dvdY = maxY;
+                dvdVy = -dvdVy;
+            }
+
+            dvdLogo.style.transform = `translate(${dvdX}px, ${dvdY}px)`;
+            requestAnimationFrame(updateDvdBounce);
+        }
+
+        window.addEventListener('load', () => {
+            requestAnimationFrame(updateDvdBounce);
+        });
 
         // Custom Glowing Mouse Trail Logic
         const coords = { x: 0, y: 0 };
@@ -582,7 +641,6 @@
             } catch(e) {}
         }
 
-        // Attach hover & click audio feedback to buttons
         document.querySelectorAll('.link-btn, .view-btn, .music-controls').forEach(el => {
             el.addEventListener('mouseenter', () => playSciFiSound(800, 'triangle', 0.03));
             el.addEventListener('click', () => playSciFiSound(1200, 'sine', 0.05));
