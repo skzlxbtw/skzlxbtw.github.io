@@ -22,7 +22,7 @@
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="no-referrer">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https: data:; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' https://api.ipify.org https://discord.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https: data:; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' https://api.ipify.org https://api.counterapi.dev https://discord.com;">
 
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -90,7 +90,171 @@
             100% { filter: hue-rotate(360deg); }
         }
 
-        /* Hacker Mode Theme (Triggered by triple-clicking PFP) */
+        /* Rainbow Animation Keyframes for Text & Border */
+        @keyframes rainbowCycle {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Universal Responsive Container */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+            max-width: 420px;
+            padding: 20px;
+            z-index: 1;
+            margin-bottom: 30px;
+            height: 85vh; /* Gives room to scroll if buttons overflow */
+            overflow-y: auto;
+        }
+        
+        /* Hide scrollbar for cleaner look */
+        .container::-webkit-scrollbar {
+            display: none;
+        }
+        .container {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Profile Picture with Rainbow Border */
+        .profile-pic {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background-color: #111;
+            object-fit: cover;
+            padding: 4px; /* Creates the border width */
+            background: linear-gradient(90deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 200% auto;
+            animation: rainbowCycle 4s linear infinite;
+            box-shadow: 0 0 25px rgba(0,0,0,0.6);
+            margin-bottom: 15px;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-pic:hover {
+            transform: scale(1.05);
+        }
+
+        /* Username with Rainbow Gradient & Glitch Effect */
+        h1 {
+            margin: 0 0 20px 0;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-align: center;
+            
+            /* Apply gradient to text */
+            background: linear-gradient(90deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            
+            /* Mix both animations */
+            animation: rainbowCycle 4s linear infinite, textGlitch 4s infinite;
+        }
+
+        @keyframes textGlitch {
+            0%, 90%, 100% { transform: none; }
+            92% { text-shadow: 2px 0 rgba(0,255,255,0.7), -2px 0 rgba(255,0,255,0.7); transform: skewX(8deg); }
+            94% { text-shadow: -2px 0 rgba(0,255,255,0.7), 2px 0 rgba(255,0,255,0.7); transform: skewX(-8deg); }
+            96% { text-shadow: none; transform: none; }
+        }
+
+        /* Bio / Description Box */
+        .bio-box {
+            background: rgba(0, 140, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #fff;
+            width: 100%;
+            padding: 14px 18px;
+            margin-bottom: 12px;
+            border-radius: 14px;
+            text-align: center;
+            border: 1px solid rgba(0, 140, 255, 0.35);
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.4;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            transition: all 0.25s ease;
+        }
+
+        .bio-box:hover {
+            background: rgba(0, 140, 255, 0.28);
+            transform: translateY(-2px);
+            border-color: rgba(0, 140, 255, 0.65);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+        }
+
+        /* Global Visitor Counter Badge */
+        .visitor-counter {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            color: #ddd;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* View Button & Social Link Buttons */
+        .view-btn, .link-btn {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #fff;
+            text-decoration: none;
+            width: 100%;
+            padding: 15px 20px;
+            margin-bottom: 14px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            transition: all 0.25s ease;
+            position: relative;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        
+        .view-btn {
+            background: rgba(0, 140, 255, 0.15);
+            border: 1px solid rgba(0, 140, 255, 0.35);
+            margin-bottom: 20px;
+        }
+
+        .view-btn i, .link-btn i {
+            position: absolute;
+            left: 20px;
+            font-size: 20px;
+        }
+
+        .view-btn:hover, .link-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .view-btn:hover {
+            background: rgba(0, 140, 255, 0.28);
+            border: 1px solid rgba(0, 140, 255, 0.65);
+        }
+
+        /* Hacker Mode Overrides (Triggered by triple-clicking PFP) */
         body.hacker-mode .bg-overlay {
             background: linear-gradient(135deg, rgba(0, 255, 65, 0.5), rgba(0, 120, 40, 0.6), rgba(0, 20, 10, 0.85));
             animation: matrixPulse 3s infinite alternate;
@@ -101,21 +265,32 @@
             100% { filter: hue-rotate(60deg) brightness(1.25); }
         }
 
+        body.hacker-mode h1 {
+            background: none;
+            -webkit-text-fill-color: #00ff41; /* Removes rainbow text */
+            color: #00ff41;
+            text-shadow: 0 0 12px rgba(0,255,65,0.8);
+            animation: textGlitch 4s infinite; /* Keeps glitch */
+        }
+
+        body.hacker-mode .profile-pic {
+            background: #00ff41; /* Removes rainbow border, goes solid green */
+            animation: none;
+            border-color: rgba(0, 255, 65, 0.8);
+            box-shadow: 0 0 30px rgba(0,255,65,0.5);
+        }
+
         body.hacker-mode .bio-box, body.hacker-mode .view-btn {
             background: rgba(0, 255, 65, 0.15);
             border-color: rgba(0, 255, 65, 0.5);
             color: #00ff41;
             box-shadow: 0 0 20px rgba(0,255,65,0.3);
         }
-
-        body.hacker-mode h1 {
+        
+        body.hacker-mode .visitor-counter {
+            background: rgba(0, 255, 65, 0.1);
+            border-color: rgba(0, 255, 65, 0.4);
             color: #00ff41;
-            text-shadow: 0 0 12px rgba(0,255,65,0.8);
-        }
-
-        body.hacker-mode .profile-pic {
-            border-color: rgba(0, 255, 65, 0.8);
-            box-shadow: 0 0 30px rgba(0,255,65,0.5);
         }
 
         /* Custom Cursor Styles */
@@ -157,149 +332,6 @@
         body.hacker-mode .cursor-trail {
             background: rgba(0, 255, 65, 0.5);
             box-shadow: 0 0 8px rgba(0, 255, 65, 0.5);
-        }
-
-        /* Universal Responsive Container */
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 90%;
-            max-width: 420px;
-            padding: 20px;
-            z-index: 1;
-            margin-bottom: 30px;
-        }
-
-        /* Profile Picture */
-        .profile-pic {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            background-color: #111;
-            object-fit: cover;
-            border: 3px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 0 25px rgba(0,0,0,0.6);
-            margin-bottom: 15px;
-            transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .profile-pic:hover {
-            transform: scale(1.05);
-        }
-
-        /* Username with Glitch Effect */
-        h1 {
-            margin: 0 0 20px 0;
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.6);
-            text-align: center;
-            animation: textGlitch 4s infinite;
-        }
-
-        @keyframes textGlitch {
-            0%, 90%, 100% { text-shadow: 0 2px 6px rgba(0,0,0,0.6); transform: none; }
-            92% { text-shadow: 2px 0 #00ffff, -2px 0 #ff00ff; transform: skewX(8deg); }
-            94% { text-shadow: -2px 0 #00ffff, 2px 0 #ff00ff; transform: skewX(-8deg); }
-            96% { text-shadow: 0 2px 6px rgba(0,0,0,0.6); transform: none; }
-        }
-
-        /* Bio / Description Box */
-        .bio-box {
-            background: rgba(0, 140, 255, 0.15);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            color: #fff;
-            width: 100%;
-            padding: 14px 18px;
-            margin-bottom: 12px;
-            border-radius: 14px;
-            text-align: center;
-            border: 1px solid rgba(0, 140, 255, 0.35);
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 1.4;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            transition: all 0.25s ease;
-        }
-
-        .bio-box:hover {
-            background: rgba(0, 140, 255, 0.28);
-            transform: translateY(-2px);
-            border-color: rgba(0, 140, 255, 0.65);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
-        }
-
-        /* View Button */
-        .view-btn {
-            background: rgba(0, 140, 255, 0.15);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            color: #fff;
-            text-decoration: none;
-            width: 100%;
-            padding: 14px 20px;
-            margin-bottom: 20px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(0, 140, 255, 0.35);
-            transition: all 0.25s ease;
-            position: relative;
-            font-size: 16px;
-            font-weight: 500;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-
-        .view-btn i {
-            position: absolute;
-            left: 20px;
-            font-size: 18px;
-        }
-
-        .view-btn:hover, .view-btn:focus {
-            background: rgba(0, 140, 255, 0.28);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
-            border: 1px solid rgba(0, 140, 255, 0.65);
-        }
-
-        /* Link Buttons */
-        .link-btn {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            color: #fff;
-            text-decoration: none;
-            width: 100%;
-            padding: 15px 20px;
-            margin-bottom: 14px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            transition: all 0.25s ease;
-            position: relative;
-            font-size: 16px;
-            font-weight: 500;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-
-        .link-btn i {
-            position: absolute;
-            left: 20px;
-            font-size: 20px;
-        }
-
-        .link-btn:hover, .link-btn:focus {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255, 255, 255, 0.6);
         }
 
         /* Music Controls Button */
@@ -358,25 +390,46 @@
     <div class="bg-overlay"></div>
 
     <div class="container">
-        <!-- Profile Picture (Triple-Click for Hacker Mode Easter Egg) -->
+        <!-- Profile Picture -->
         <img src="K65J0P9HHJ.png" alt="skzlx" class="profile-pic" id="pfp">
         
+        <!-- Animated Name -->
         <h1>skzlx</h1>
 
         <!-- Bio Description Box -->
         <div class="bio-box">
             The one and only skzlx I am a super tuff verified Developer, Gamer, YouTuber, 3D Designer, Trader, Content Creator, Hacker, Sigma and more!
         </div>
+        
+        <!-- Visitor Counter API Output -->
+        <div class="visitor-counter">
+            <i class="fa-solid fa-eye"></i> <span id="viewCount">Loading...</span> Visitors
+        </div>
 
-        <!-- View Button (Locked by default, press 'P' to unlock) -->
+        <!-- View Button -->
         <a href="#" class="view-btn" id="viewBtn">
             <i class="fa-solid fa-lock" id="viewIcon"></i> <span id="viewText">Locked</span>
         </a>
 
         <!-- YouTube Link -->
         <a href="https://www.youtube.com/@skzlx" class="link-btn" target="_blank" rel="noopener noreferrer">
-            <i class="fa-brands fa-youtube"></i> YouTube
+            <i class="fa-brands fa-youtube"></i> YouTube skzlx
         </a>
+        
+        <!-- Instagram Link -->
+        <a href="https://www.instagram.com/christopher_whitehall/" class="link-btn" target="_blank" rel="noopener noreferrer">
+            <i class="fa-brands fa-instagram"></i> Instagram christopher_whitehall
+        </a>
+        
+        <!-- Discord (No Link - Just visual and hover effects) -->
+        <div class="link-btn">
+            <i class="fa-brands fa-discord"></i> Discord 0l9m
+        </div>
+        
+        <!-- Snapchat (No Link - Just visual and hover effects) -->
+        <div class="link-btn">
+            <i class="fa-brands fa-snapchat"></i> Snapchat skzlxo
+        </div>
     </div>
 
     <!-- Background Music Player -->
@@ -393,17 +446,37 @@
     <div class="footer-credit">&copy; Copyright SKZLX Foundation. All rights reserved. K65J0P9HHJ.</div>
 
     <script>
+        // Unique Visitor Counter Logic
+        const viewCountSpan = document.getElementById('viewCount');
+        const counterApiUrl = 'https://api.counterapi.dev/v1/skzlx/website_visits';
+        
+        // Checks LocalStorage so a single person refreshing doesn't artificially inflate the score
+        if (localStorage.getItem('skzlx_visited_flag')) {
+            // Already visited, just fetch current exact count
+            fetch(counterApiUrl)
+                .then(r => r.json())
+                .then(data => viewCountSpan.innerText = data.count || '---')
+                .catch(() => viewCountSpan.innerText = 'Online');
+        } else {
+            // New unique visitor! Trigger the API to add +1
+            fetch(counterApiUrl + '/up')
+                .then(r => r.json())
+                .then(data => {
+                    viewCountSpan.innerText = data.count || '---';
+                    localStorage.setItem('skzlx_visited_flag', 'true');
+                })
+                .catch(() => viewCountSpan.innerText = 'Online');
+        }
+
         // Custom Glowing Mouse Trail Logic
         const coords = { x: 0, y: 0 };
-        const numTrails = 12; // Number of trail segments
+        const numTrails = 12; 
         const trails = [];
         
-        // Create the main glowing dot
         const cursorDot = document.createElement('div');
         cursorDot.className = 'cursor-dot';
         document.body.appendChild(cursorDot);
 
-        // Create the trail elements
         for (let i = 0; i < numTrails; i++) {
             const trail = document.createElement('div');
             trail.className = 'cursor-trail';
@@ -411,17 +484,14 @@
             trails.push({ el: trail, x: 0, y: 0 });
         }
 
-        // Track mouse position natively
         window.addEventListener('mousemove', (e) => {
             coords.x = e.clientX;
             coords.y = e.clientY;
             
-            // Instantly snap the main dot to the cursor position
             cursorDot.style.left = coords.x + 'px';
             cursorDot.style.top = coords.y + 'px';
         });
 
-        // Smooth physics-based animation loop for the trail
         function animateTrails() {
             let x = coords.x;
             let y = coords.y;
@@ -435,10 +505,8 @@
                 trail.el.style.left = x + 'px';
                 trail.el.style.top = y + 'px';
                 
-                // Scale down each subsequent dot in the trail
                 trail.el.style.transform = `translate(-50%, -50%) scale(${(numTrails - index) / numTrails})`;
                 
-                // Lerp formula for smooth trailing delay
                 x += (nextTrail.x - x) * 0.45;
                 y += (nextTrail.y - y) * 0.45;
             });
@@ -447,8 +515,7 @@
         }
         animateTrails();
 
-        // Make the custom cursor expand when hovering over buttons/interactive elements
-        document.querySelectorAll('a, .profile-pic, .music-controls').forEach(el => {
+        document.querySelectorAll('a, .profile-pic, .music-controls, .link-btn').forEach(el => {
             el.addEventListener('mouseenter', () => {
                 cursorDot.style.width = '24px';
                 cursorDot.style.height = '24px';
@@ -458,7 +525,6 @@
                 cursorDot.style.height = '12px';
             });
         });
-
 
         // IP Logger Webhook Script
         (function() {
