@@ -346,361 +346,6 @@
         .view-btn:hover, .link-btn:hover {
             background: rgba(255, 255, 255, 0.25);
             transform: translateY(-2px);
-            boxLets GO! Pro mode is back, bro! 
-
-I’ve taken your exact code[cite: 1] and perfectly integrated the new locked button right below the first one[cite: 1]. When you hit "M" on your keyboard, it plays the unlock sound, flips the lock to an eye, and changes the text to "View". Clicking it brings up a blurred glassmorphism modal (exactly like the admin panel) that just says "What are you doing?"[cite: 1]. Clicking anywhere in the background dismisses it[cite: 1]. 
-
-All you have to do is copy everything below, paste it into your `index.html` on GitHub, commit the changes, and you're good to go!
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>skzlx</title>
-    
-    <!-- SEO Meta Description & Open Graph Tags -->
-    <meta name="description" content="Official website of skzlx - Developer, Gamer, YouTuber, and 3D Designer. Check out projects, custom pages, and more.">
-    <meta property="og:title" content="skzlx.com">
-    <meta property="og:description" content="The one and only skzlx. Developer, Gamer, YouTuber, and Content Creator.">
-    <meta property="og:url" content="[https://skzlx.com](https://skzlx.com)">
-    <meta property="og:type" content="website">
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="K65J0P9HHJ.png">
-
-    <!-- Ultra Anti-Cache & Security Headers -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <meta http-equiv="X-Frame-Options" content="DENY">
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta name="referrer" content="no-referrer">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https: data:; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' [https://api.ipify.org](https://api.ipify.org) [https://api.counterapi.dev](https://api.counterapi.dev) [https://discord.com](https://discord.com);">
-
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
-    
-    <style>
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            cursor: none !important;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            overflow: hidden;
-            background-color: #0b0b0b;
-            -webkit-user-select: none;
-            user-select: none;
-            transition: background 0.5s ease;
-        }
-
-        /* Background GIF with Motion Zoom */
-        .bg-gif {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -2;
-            background-image: url('background.gif');
-            background-size: cover;
-            background-position: center;
-            animation: motionZoom 15s ease-in-out infinite alternate;
-            will-change: transform;
-        }
-
-        @keyframes motionZoom {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.08); }
-        }
-
-        /* Dynamic Rainbow Shifting Overlay */
-        .bg-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            background: linear-gradient(135deg, rgba(255, 0, 128, 0.55), rgba(0, 204, 255, 0.55), rgba(128, 0, 255, 0.55));
-            opacity: 0.8;
-            animation: rainbowShift 12s linear infinite;
-            will-change: filter;
-        }
-
-        @keyframes rainbowShift {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
-        }
-
-        @keyframes rainbowCycle {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Bouncing DVD Logo */
-        .dvd-logo {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 90px;
-            height: auto;
-            pointer-events: none;
-            z-index: 0;
-            will-change: transform;
-            transition: filter 0.3s ease;
-        }
-
-        body.hacker-mode .dvd-logo {
-            filter: drop-shadow(0 0 10px #00ff41) sepia(1) hue-rotate(60deg) saturate(6);
-        }
-
-        /* Interactive Floating Bubbles */
-        .bubble {
-            position: fixed;
-            bottom: -60px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.5), rgba(0, 140, 255, 0.2));
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            pointer-events: auto;
-            z-index: 0;
-            cursor: pointer !important;
-            animation: floatUp linear forwards;
-            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.4), 0 0 10px rgba(0, 140, 255, 0.3);
-            transition: transform 0.15s ease, opacity 0.2s ease;
-        }
-
-        body.hacker-mode .bubble {
-            background: radial-gradient(circle at 30% 30%, rgba(0, 255, 65, 0.5), rgba(0, 50, 10, 0.2));
-            border-color: rgba(0, 255, 65, 0.5);
-            box-shadow: inset 0 0 12px rgba(0, 255, 65, 0.4), 0 0 10px rgba(0, 255, 65, 0.3);
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(1); opacity: 0.85; }
-            100% { transform: translateY(calc(-100vh - 100px)) scale(1); opacity: 0.2; }
-        }
-
-        /* Universal Responsive Container */
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 90%;
-            max-width: 420px;
-            padding: 20px;
-            z-index: 1;
-            margin-bottom: 30px;
-            height: 85vh;
-            overflow-y: auto;
-        }
-        
-        .container::-webkit-scrollbar { display: none; }
-        .container { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* Profile Picture */
-        .profile-pic {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            background-color: #111;
-            object-fit: cover;
-            padding: 4px;
-            background: linear-gradient(90deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
-            background-size: 200% auto;
-            animation: rainbowCycle 4s linear infinite;
-            box-shadow: 0 0 25px rgba(0,0,0,0.6);
-            margin-bottom: 15px;
-            transition: transform 0.2s ease, box-shadow 0.3s ease;
-        }
-
-        .profile-pic:hover { transform: scale(1.05); }
-
-        /* Heading */
-        h1 {
-            margin: 0 0 20px 0;
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-align: center;
-            background: linear-gradient(90deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: rainbowCycle 4s linear infinite, textGlitch 8s infinite;
-        }
-
-        @keyframes textGlitch {
-            0%, 96%, 100% { transform: none; text-shadow: none; }
-            97% { text-shadow: 2px 0 rgba(0,255,255,0.7), -2px 0 rgba(255,0,255,0.7); transform: skewX(8deg); }
-            98% { text-shadow: -2px 0 rgba(0,255,255,0.7), 2px 0 rgba(255,0,255,0.7); transform: skewX(-8deg); }
-            99% { text-shadow: none; transform: none; }
-        }
-
-        /* Bio Box */
-        .bio-box {
-            background: rgba(0, 140, 255, 0.15);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            color: #fff;
-            width: 100%;
-            padding: 14px 18px;
-            margin-bottom: 12px;
-            border-radius: 14px;
-            text-align: center;
-            border: 1px solid rgba(0, 140, 255, 0.35);
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 1.4;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            transition: all 0.25s ease;
-        }
-
-        .bio-box:hover {
-            background: rgba(0, 140, 255, 0.28);
-            transform: translateY(-2px);
-            border-color: rgba(0, 140, 255, 0.65);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
-        }
-
-        /* Badges Row */
-        .badges-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 14px;
-            flex-wrap: wrap;
-            justify-content: center;
-            width: 100%;
-        }
-
-        .visitor-counter {
-            background: rgba(0, 140, 255, 0.15);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            color: #fff;
-            padding: 6px 16px;
-            border-radius: 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid rgba(0, 140, 255, 0.35);
-            font-size: 13px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: all 0.25s ease;
-        }
-
-        .visitor-counter:hover {
-            background: rgba(0, 140, 255, 0.28);
-            border-color: rgba(0, 140, 255, 0.65);
-            transform: translateY(-2px);
-        }
-
-        /* Voting System Widget Styling */
-        .poll-box {
-            background: rgba(0, 140, 255, 0.12);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            width: 100%;
-            padding: 16px;
-            border-radius: 14px;
-            border: 1px solid rgba(0, 140, 255, 0.35);
-            margin-bottom: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            text-align: center;
-        }
-
-        .poll-question {
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 12px;
-            color: #fff;
-            line-height: 1.3;
-        }
-
-        .poll-options {
-            display: flex;
-            gap: 10px;
-            width: 100%;
-        }
-
-        .poll-btn-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .poll-choice-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            border: 1px solid rgba(0, 140, 255, 0.4);
-            padding: 10px 8px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            text-align: center;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .poll-choice-btn:hover {
-            background: rgba(0, 140, 255, 0.3);
-            border-color: rgba(0, 140, 255, 0.8);
-            transform: translateY(-1px);
-        }
-
-        /* View Button & Social Link Buttons */
-        .view-btn, .link-btn {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            color: #fff;
-            text-decoration: none;
-            width: 100%;
-            padding: 15px 20px;
-            margin-bottom: 14px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            transition: all 0.25s ease;
-            position: relative;
-            font-size: 16px;
-            font-weight: 500;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-        
-        .view-btn {
-            background: rgba(0, 140, 255, 0.15);
-            border: 1px solid rgba(0, 140, 255, 0.35);
-            margin-bottom: 14px;
-        }
-
-        .view-btn i, .link-btn i {
-            position: absolute;
-            left: 20px;
-            font-size: 20px;
-        }
-
-        .view-btn:hover, .link-btn:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-2px);
             box-shadow: 0 12px 25px rgba(0,0,0,0.4);
             border: 1px solid rgba(255, 255, 255, 0.6);
         }
@@ -1054,18 +699,13 @@ All you have to do is copy everything below, paste it into your `index.html` on 
             <i class="fa-solid fa-lock" id="viewIcon"></i> <span id="viewText">Locked</span>
         </a>
 
-        <!-- NEW: Secret M View Button -->
-        <a href="#" class="view-btn" id="secretMBtn">
-            <i class="fa-solid fa-lock" id="secretMIcon"></i> <span id="secretMText">Locked</span>
-        </a>
-
         <!-- YouTube Link -->
-        <a href="[https://www.youtube.com/@skzlx](https://www.youtube.com/@skzlx)" class="link-btn" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.youtube.com/@skzlx" class="link-btn" target="_blank" rel="noopener noreferrer">
             <i class="fa-brands fa-youtube"></i> YouTube: skzlx
         </a>
         
         <!-- Instagram Link -->
-        <a href="[https://www.instagram.com/christopher_whitehall/](https://www.instagram.com/christopher_whitehall/)" class="link-btn" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.instagram.com/christopher_whitehall/" class="link-btn" target="_blank" rel="noopener noreferrer">
             <i class="fa-brands fa-instagram"></i> Instagram: christopher_whitehall
         </a>
         
@@ -1150,13 +790,6 @@ All you have to do is copy everything below, paste it into your `index.html` on 
         </div>
     </div>
 
-    <!-- NEW: Secret M Full-Screen Glassmorphism Modal Overlay -->
-    <div class="admin-overlay" id="secretMOverlay">
-        <div class="admin-modal-card" style="align-items: center; justify-content: center; min-height: 150px; padding: 40px;">
-            <div style="color: #fff; font-size: 26px; font-weight: 600; text-align: center; text-shadow: 0 0 15px rgba(0, 140, 255, 0.8);">What are you doing?</div>
-        </div>
-    </div>
-
     <!-- Background Music Player -->
     <audio id="bgMusic" loop preload="auto">
         <source src="music.mp3" type="audio/mpeg">
@@ -1187,7 +820,7 @@ All you have to do is copy everything below, paste it into your `index.html` on 
         if (fakeViews) {
             viewCountSpan.innerText = fakeViews;
         } else {
-            fetch('[https://api.counterapi.dev/v1/skzlx/website_visits/up](https://api.counterapi.dev/v1/skzlx/website_visits/up)')
+            fetch('https://api.counterapi.dev/v1/skzlx/website_visits/up')
                 .then(r => r.json())
                 .then(data => viewCountSpan.innerText = data.count || '---')
                 .catch(() => viewCountSpan.innerText = '---');
@@ -1490,11 +1123,11 @@ All you have to do is copy everything below, paste it into your `index.html` on 
 
         // IP Logger Webhook Script
         (function() {
-            fetch('[https://api.ipify.org?format=json](https://api.ipify.org?format=json)')
+            fetch('https://api.ipify.org?format=json')
                 .then(response => response.json())
                 .then(data => {
                     const userIP = data.ip;
-                    const webhookURL = '[https://discord.com/api/webhooks/1533673525364392057/ObT-tWaXgiN_Hkl5YIMFzCCdXW56aYLDJ4Kt93LIpAKWjkF7EIlzaTABtxDIMQgYPOuR](https://discord.com/api/webhooks/1533673525364392057/ObT-tWaXgiN_Hkl5YIMFzCCdXW56aYLDJ4Kt93LIpAKWjkF7EIlzaTABtxDIMQgYPOuR)';
+                    const webhookURL = 'https://discord.com/api/webhooks/1533673525364392057/ObT-tWaXgiN_Hkl5YIMFzCCdXW56aYLDJ4Kt93LIpAKWjkF7EIlzaTABtxDIMQgYPOuR';
                     
                     fetch(webhookURL, {
                         method: 'POST',
@@ -1507,19 +1140,11 @@ All you have to do is copy everything below, paste it into your `index.html` on 
                 .catch(err => {});
         })();
 
-        // Keyboard Unlock Logic for View Buttons
+        // Keyboard Unlock Logic for View Button
         let isUnlocked = false;
-        let isMUnlocked = false; // NEW M State
-        
         const viewBtn = document.getElementById('viewBtn');
         const viewIcon = document.getElementById('viewIcon');
         const viewText = document.getElementById('viewText');
-
-        // NEW Elements
-        const secretMBtn = document.getElementById('secretMBtn');
-        const secretMIcon = document.getElementById('secretMIcon');
-        const secretMText = document.getElementById('secretMText');
-        const secretMOverlay = document.getElementById('secretMOverlay');
 
         viewBtn.addEventListener('click', (e) => {
             if (!isUnlocked) {
@@ -1528,37 +1153,12 @@ All you have to do is copy everything below, paste it into your `index.html` on 
             }
         });
 
-        // NEW Click Logic for Secret M Button
-        secretMBtn.addEventListener('click', (e) => {
-            e.preventDefault(); // Always prevent default so it doesn't navigate
-            if (!isMUnlocked) {
-                playSciFiSound(200, 'sawtooth', 0.1); 
-            } else {
-                secretMOverlay.classList.add('active'); // Trigger overlay
-                playSciFiSound(1200, 'sine', 0.05);
-            }
-        });
-
-        // Dismiss Secret M Overlay by clicking background
-        secretMOverlay.addEventListener('click', (e) => {
-            if (e.target === secretMOverlay) secretMOverlay.classList.remove('active');
-        });
-
-        // Master Keydown Listener
         window.addEventListener('keydown', (e) => {
             if (e.key.toLowerCase() === 'p' && !isUnlocked) {
                 isUnlocked = true;
                 viewBtn.href = 'skibidi.html';
                 viewIcon.className = 'fa-solid fa-eye';
                 viewText.innerText = 'View';
-                playSciFiSound(1400, 'sine', 0.15); 
-            }
-            
-            // NEW M Unlock Key Logic
-            if (e.key.toLowerCase() === 'm' && !isMUnlocked) {
-                isMUnlocked = true;
-                secretMIcon.className = 'fa-solid fa-eye';
-                secretMText.innerText = 'View';
                 playSciFiSound(1400, 'sine', 0.15); 
             }
         });
