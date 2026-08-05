@@ -151,6 +151,7 @@
             margin-bottom: 30px;
             height: 85vh;
             overflow-y: auto;
+            /* Allow room for 3D tilts without clipping */
             perspective: 1200px;
         }
         
@@ -212,6 +213,7 @@
             font-weight: 400;
             line-height: 1.4;
             box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            /* Removed standard hover transitions here so the JS 3D engine controls it completely */
             will-change: transform;
         }
 
@@ -581,7 +583,7 @@
             position: fixed;
             bottom: 38px;
             background: rgba(0, 0, 0, 0.65);
-            padding: 10px 20px;
+            padding: 8px 18px;
             border-radius: 30px;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
@@ -589,34 +591,13 @@
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
             z-index: 100;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             font-size: 13px;
         }
         
         .music-controls:hover { background: rgba(0, 0, 0, 0.85); }
-
-        .music-btn {
-            font-size: 16px;
-            color: rgba(255, 255, 255, 0.7);
-            transition: color 0.2s ease, transform 0.2s ease;
-        }
-
-        .music-btn:hover {
-            color: #00ffff; /* Cyber cyan hover */
-            transform: scale(1.15);
-        }
-
-        .play-pause-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: transform 0.2s ease;
-        }
-        .play-pause-wrapper:hover {
-            transform: scale(1.05);
-        }
 
         .footer-credit {
             position: fixed;
@@ -810,16 +791,14 @@
         </div>
     </div>
 
-    <!-- Upgraded Multi-Song Audio Engine -->
-    <audio id="bgMusic" preload="auto"></audio>
+    <!-- Background Music Player -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
 
-    <div class="music-controls">
-        <i class="fa-solid fa-backward-step music-btn" id="prevSongBtn"></i>
-        <div class="play-pause-wrapper" id="playPauseWrapper">
-            <i class="fa-solid fa-music" id="musicIcon"></i>
-            <span id="musicText" style="min-width: 90px; text-align: center;">Tap to play</span>
-        </div>
-        <i class="fa-solid fa-forward-step music-btn" id="nextSongBtn"></i>
+    <div class="music-controls" onclick="toggleMusic()">
+        <i class="fa-solid fa-music" id="musicIcon"></i>
+        <span id="musicText">Tap anywhere to play</span>
     </div>
 
     <!-- Copyright Footer -->
@@ -1157,6 +1136,7 @@
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
                 
+                // Calculate rotation based on cursor position (-12 to 12 degrees)
                 const rotateX = ((y - centerY) / centerY) * -12; 
                 const rotateY = ((x - centerX) / centerX) * 12;
                 
@@ -1166,6 +1146,7 @@
 
             el.addEventListener('mouseleave', () => {
                 el.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
+                // Reset back to normal
                 el.style.transform = `perspective(1000px) scale(1) rotateX(0deg) rotateY(0deg)`;
             });
         });
@@ -1228,8 +1209,10 @@
             if (e.target === noticeOverlay) noticeOverlay.classList.remove('active');
         });
 
+        // Global Keydown Listener for P and M Unlocks
         window.addEventListener('keydown', (e) => {
             const key = e.key.toLowerCase();
+            
             if (key === 'p' && !isUnlocked) {
                 isUnlocked = true;
                 viewBtn.href = 'skibidi.html';
@@ -1237,6 +1220,7 @@
                 viewText.innerText = 'View';
                 playSciFiSound(1400, 'sine', 0.15); 
             }
+            
             if (key === 'm' && !isUnlocked2) {
                 isUnlocked2 = true;
                 viewIcon2.className = 'fa-solid fa-eye';
@@ -1245,107 +1229,14 @@
             }
         });
 
-        // ==========================================
-        // NEW MULTI-SONG PLAYLIST LOGIC START
-        // ==========================================
         const music = document.getElementById("bgMusic");
         const musicText = document.getElementById("musicText");
         const musicIcon = document.getElementById("musicIcon");
-        const playPauseWrapper = document.getElementById("playPauseWrapper");
-        const nextSongBtn = document.getElementById("nextSongBtn");
-        const prevSongBtn = document.getElementById("prevSongBtn");
-        
         let isPlaying = false;
-        let currentSongIndex = 0;
-
-        // Add as many songs here as you want in the exact same format
-        const playlist = [
-            { file: "pizza.mp3", name: "Mario Pizza" },
-            { file: "phantom.mp3", name: "Phantom" }
-        ];
-
-        // Pre-load the first song source
-        music.src = playlist[currentSongIndex].file;
-
-        function updateUIForCurrentSong() {
-            if (isPlaying) {
-                musicText.innerText = playlist[currentSongIndex].name;
-                musicIcon.className = "fa-solid fa-pause";
-            } else {
-                musicText.innerText = playlist[currentSongIndex].name + " (Paused)";
-                musicIcon.className = "fa-solid fa-play";
-            }
-        }
-
-        function skipSong(direction) {
-            if (direction === 'next') {
-                currentSongIndex = (currentSongIndex + 1) % playlist.length;
-            } else {
-                currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
-            }
-            
-            music.src = playlist[currentSongIndex].file;
-            
-            if (isPlaying) {
-                music.play().catch(e => console.log(e));
-            }
-            updateUIForCurrentSong();
-        }
-
-        // Event Listeners for the Music UI Buttons
-        nextSongBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Stops it from double-clicking the play/pause button behind it
-            playSciFiSound(900, 'square', 0.05);
-            skipSong('next');
-        });
-
-        prevSongBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            playSciFiSound(700, 'square', 0.05);
-            skipSong('prev');
-        });
-
-        playPauseWrapper.addEventListener('click', (e) => {
-            e.stopPropagation();
-            playSciFiSound(1200, 'sine', 0.05);
-            if (isPlaying) {
-                music.pause();
-                isPlaying = false;
-            } else {
-                music.play().then(() => {
-                    isPlaying = true;
-                }).catch(err => console.log("Audio autoplay restricted:", err));
-            }
-            updateUIForCurrentSong();
-        });
-
-        // Auto-skip when song completely finishes
-        music.addEventListener('ended', () => {
-            skipSong('next');
-            // Force play if browser tries to pause on track swap
-            music.play().then(() => {
-                isPlaying = true;
-                updateUIForCurrentSong();
-            });
-        });
-
-        // Trigger autoplay on ANY initial user click on the screen (unless they clicked the control arrows specifically)
-        document.body.addEventListener('click', function(e) {
-            const isClickingControls = e.target.id === 'prevSongBtn' || e.target.id === 'nextSongBtn' || e.target.closest('#playPauseWrapper');
-            
-            if (!isPlaying && !isClickingControls) {
-                music.play().then(() => {
-                    isPlaying = true;
-                    updateUIForCurrentSong();
-                }).catch(err => console.log("Audio autoplay restricted:", err));
-            }
-        }, { once: true }); 
-        // ==========================================
-        // NEW MULTI-SONG PLAYLIST LOGIC END
-        // ==========================================
 
         document.querySelectorAll('.link-btn, .view-btn, .music-controls, .poll-choice-btn').forEach(el => {
             el.addEventListener('mouseenter', () => playSciFiSound(800, 'triangle', 0.03));
+            el.addEventListener('click', () => playSciFiSound(1200, 'sine', 0.05));
         });
 
         // Triple-Click Easter Egg for Hacker Mode
@@ -1367,6 +1258,35 @@
             
             clickTimer = setTimeout(() => { pfpClicks = 0; }, 600);
         });
+
+        document.body.addEventListener('click', function(e) {
+            if (!isPlaying) {
+                music.play().then(() => {
+                    isPlaying = true;
+                    musicText.innerText = "Playing";
+                    musicIcon.classList.remove('fa-music');
+                    musicIcon.classList.add('fa-pause');
+                }).catch(err => console.log("Audio autoplay restricted:", err));
+            }
+        }, { once: true }); 
+
+        function toggleMusic() {
+            event.stopPropagation(); 
+            if (isPlaying) {
+                music.pause();
+                isPlaying = false;
+                musicText.innerText = "Paused";
+                musicIcon.classList.remove('fa-pause');
+                musicIcon.classList.add('fa-play');
+            } else {
+                music.play().then(() => {
+                    isPlaying = true;
+                    musicText.innerText = "Playing";
+                    musicIcon.classList.remove('fa-play');
+                    musicIcon.classList.add('fa-pause');
+                });
+            }
+        }
     </script>
 </body>
 </html>
