@@ -151,6 +151,8 @@
             margin-bottom: 30px;
             height: 85vh;
             overflow-y: auto;
+            /* Allow room for 3D tilts without clipping */
+            perspective: 1200px;
         }
         
         .container::-webkit-scrollbar { display: none; }
@@ -211,14 +213,8 @@
             font-weight: 400;
             line-height: 1.4;
             box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            transition: all 0.25s ease;
-        }
-
-        .bio-box:hover {
-            background: rgba(0, 140, 255, 0.28);
-            transform: translateY(-2px);
-            border-color: rgba(0, 140, 255, 0.65);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+            /* Removed standard hover transitions here so the JS 3D engine controls it completely */
+            will-change: transform;
         }
 
         /* Badges Row */
@@ -244,13 +240,7 @@
             border: 1px solid rgba(0, 140, 255, 0.35);
             font-size: 13px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: all 0.25s ease;
-        }
-
-        .visitor-counter:hover {
-            background: rgba(0, 140, 255, 0.28);
-            border-color: rgba(0, 140, 255, 0.65);
-            transform: translateY(-2px);
+            will-change: transform;
         }
 
         /* Voting System Widget Styling */
@@ -265,6 +255,7 @@
             margin-bottom: 20px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.3);
             text-align: center;
+            will-change: transform;
         }
 
         .poll-question {
@@ -306,7 +297,6 @@
         .poll-choice-btn:hover {
             background: rgba(0, 140, 255, 0.3);
             border-color: rgba(0, 140, 255, 0.8);
-            transform: translateY(-1px);
         }
 
         /* View Button & Social Link Buttons */
@@ -324,11 +314,11 @@
             align-items: center;
             justify-content: center;
             border: 1px solid rgba(255, 255, 255, 0.25);
-            transition: all 0.25s ease;
             position: relative;
             font-size: 16px;
             font-weight: 500;
             box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            will-change: transform;
         }
         
         .view-btn {
@@ -345,7 +335,6 @@
 
         .view-btn:hover, .link-btn:hover {
             background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-2px);
             box-shadow: 0 12px 25px rgba(0,0,0,0.4);
             border: 1px solid rgba(255, 255, 255, 0.6);
         }
@@ -370,11 +359,11 @@
             align-items: center;
             justify-content: center;
             border: 1px solid rgba(255, 0, 0, 0.4);
-            transition: all 0.25s ease;
             position: relative;
             font-size: 15px;
             font-weight: 600;
             box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            will-change: transform;
         }
 
         .admin-trigger-btn i {
@@ -386,7 +375,6 @@
         .admin-trigger-btn:hover {
             background: rgba(255, 0, 0, 0.35);
             border-color: rgba(255, 0, 0, 0.8);
-            transform: translateY(-2px);
             box-shadow: 0 12px 25px rgba(255, 0, 0, 0.2);
             color: #ff6666;
         }
@@ -1131,6 +1119,35 @@
             el.addEventListener('mouseleave', () => {
                 cursorDot.style.width = '12px';
                 cursorDot.style.height = '12px';
+            });
+        });
+
+        // 3D Glass Tilt Effect for UI Elements
+        const tiltElements = document.querySelectorAll('.bio-box, .poll-box, .view-btn, .link-btn, .admin-trigger-btn');
+        
+        tiltElements.forEach(el => {
+            el.style.transformStyle = 'preserve-3d';
+            
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                // Calculate rotation based on cursor position (-12 to 12 degrees)
+                const rotateX = ((y - centerY) / centerY) * -12; 
+                const rotateY = ((x - centerX) / centerX) * 12;
+                
+                el.style.transition = 'transform 0.05s linear';
+                el.style.transform = `perspective(1000px) scale(1.04) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+
+            el.addEventListener('mouseleave', () => {
+                el.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
+                // Reset back to normal
+                el.style.transform = `perspective(1000px) scale(1) rotateX(0deg) rotateY(0deg)`;
             });
         });
 
